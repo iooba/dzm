@@ -98,6 +98,10 @@ class ExtensionBlocks {
         return result;
     }
 
+    alert (args) {
+        window.alert(`${args.TEXT}`);
+    }
+
     /**
      * @returns {object} metadata for this extension and its blocks.
      */
@@ -124,6 +128,23 @@ class ExtensionBlocks {
                         SCRIPT: {
                             type: ArgumentType.STRING,
                             defaultValue: '3 + 4'
+                        }
+                    }
+                },
+                {
+                    opcode: 'alert-text',
+                    blockType: BlockType.COMMAND,
+                    blockAllThreads: false,
+                    text: formatMessage({
+                        id: 'myExtension.alert',
+                        default: 'alert [TEXT]',
+                        description: 'alert text'
+                    }),
+                    func: 'alert',
+                    arguments: {
+                        TEXT: {
+                            type: ArgumentType.STRING,
+                            defaultValue: 'Hello!'
                         }
                     }
                 }

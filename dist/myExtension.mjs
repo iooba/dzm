@@ -798,6 +798,12 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       console.log(result);
       return result;
     }
+  }, {
+    key: "alert",
+    value: function alert(args) {
+      console.log(args);
+      window.alert("".concat(args.TEXT));
+    }
     /**
      * @returns {object} metadata for this extension and its blocks.
      */
@@ -826,6 +832,22 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             SCRIPT: {
               type: argumentType.STRING,
               defaultValue: '3 + 4'
+            }
+          }
+        }, {
+          opcode: 'alert-text',
+          blockType: blockType.COMMAND,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: 'myExtension.alert',
+            default: 'alert [TEXT]',
+            description: 'alert text'
+          }),
+          func: 'alert',
+          arguments: {
+            TEXT: {
+              type: argumentType.STRING,
+              defaultValue: 'Hello!'
             }
           }
         }],
