@@ -801,13 +801,26 @@ var ExtensionBlocks = /*#__PURE__*/function () {
   }, {
     key: "alert",
     value: function alert(args) {
-      console.log(args);
       window.alert("".concat(args.TEXT));
     }
+  }, {
+    key: "myWhile",
+    value: function myWhile(args, util) {
+      var condition = cast.toBoolean(args.CONDITION);
+
+      if (condition) {
+        util.startBranch(1, true);
+      }
+    }
+  }, {
+    key: "getItems",
+    value: function getItems(args, util) {
+      console.log(util);
+    }
+
     /**
      * @returns {object} metadata for this extension and its blocks.
      */
-
   }, {
     key: "getInfo",
     value: function getInfo() {
@@ -848,6 +861,36 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             TEXT: {
               type: argumentType.STRING,
               defaultValue: 'Hello!'
+            }
+          }
+        }, {
+          opcode: 'my-while',
+          blockType: blockType.LOOP,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: 'myExtension.myWhile',
+            default: 'while [CONDITION]',
+            description: 'loop while'
+          }),
+          func: 'myWhile',
+          arguments: {
+            CONDITION: {
+              type: argumentType.BOOLEAN
+            }
+          }
+        }, {
+          opcode: 'get-items',
+          blockType: blockType.LOOP,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: 'myExtension.getItems',
+            default: 'get items [CONDITION]',
+            description: 'get items in loop'
+          }),
+          func: 'getItems',
+          arguments: {
+            CONDITION: {
+              type: argumentType.BOOLEAN
             }
           }
         }],

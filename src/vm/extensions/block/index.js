@@ -102,6 +102,13 @@ class ExtensionBlocks {
         window.alert(`${args.TEXT}`);
     }
 
+    myWhile (args, util) {
+        const condition = Cast.toBoolean(args.CONDITION);
+        if (condition) {
+            util.startBranch(1, true);
+        }
+    }
+
     /**
      * @returns {object} metadata for this extension and its blocks.
      */
@@ -147,7 +154,23 @@ class ExtensionBlocks {
                             defaultValue: 'Hello!'
                         }
                     }
-                }
+                },
+                {
+                    opcode: 'my-while',
+                    blockType: BlockType.LOOP,
+                    blockAllThreads: false,
+                    text: formatMessage({
+                        id: 'myExtension.myWhile',
+                        default: 'while [CONDITION]',
+                        description: 'loop while'
+                    }),
+                    func: 'myWhile',
+                    arguments: {
+                        CONDITION: {
+                            type: ArgumentType.BOOLEAN,
+                        }
+                    }
+                },
             ],
             menus: {
             }
