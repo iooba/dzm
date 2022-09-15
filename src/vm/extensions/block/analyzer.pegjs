@@ -1,6 +1,6 @@
 Expression
-  = head:(Function / Input / Ident) 
-    tail:(Function / Input / Ident)*
+  = head:(Function / Input / Ident / Number) 
+    tail:(Function / Input / Ident / Number)*
     { return [head].concat(tail) }
   
 Function "function"
@@ -11,7 +11,7 @@ Function "function"
       { return [head].concat(tail); }
     )?
     _ ")" 
-    { return { type: "function", name, args: args || [] } }
+    { return { type: "function", name, args: args.flat() || [] } }
 
 Input "input"
   = "in" name:Integer
@@ -21,10 +21,14 @@ Ident "ident"
   = name:String
   { return { type: "ident", name } }
 
-String "string"
+Number "number"
+  = number:Integer
+  { return { type: "number", number } }
+
+String
   = _ text:[a-zA-Z]+ { return text.join("") }
 
-Integer "integer"
+Integer
   = _ [0-9]+ { return parseInt(text(), 10); }
 
 _ "whitespace"
