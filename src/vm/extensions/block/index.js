@@ -4,6 +4,8 @@ import Cast from '../../util/cast';
 import translations from './translations.json';
 import blockIcon from './block-icon.png';
 
+import * as analyzer from "./analyzer"
+
 /**
  * Formatter which is used for translation.
  * This will be replaced which is used in the runtime.
@@ -91,22 +93,22 @@ class ExtensionBlocks {
         }
     }
 
-    doIt (args) {
-        const func = new Function(`return (${Cast.toString(args.SCRIPT)})`);
-        const result = func.call(this);
-        console.log(result);
-        return result;
+    run_fpga(args) {
+        const value = args.value;
+        console.log({ value });
+        console.log(JSON.stringify(analyzer.parse(value), null, "\t"));
     }
 
-    alert (args) {
-        window.alert(`${args.TEXT}`);
+    input(args) {
+        return `in${args.index}`;
     }
 
-    myWhile (args, util) {
-        const condition = Cast.toBoolean(args.CONDITION);
-        if (condition) {
-            util.startBranch(1, true);
-        }
+    add (args) {
+        return `add(${args.x}, ${args.y})`;
+    }
+
+    multi(args) {
+        return `multi(${args.x}, ${args.y})`;
     }
 
     /**
@@ -122,52 +124,78 @@ class ExtensionBlocks {
             showStatusButton: false,
             blocks: [
                 {
-                    opcode: 'do-it',
-                    blockType: BlockType.REPORTER,
-                    blockAllThreads: false,
-                    text: formatMessage({
-                        id: 'myExtension.doIt',
-                        default: 'do it [SCRIPT]',
-                        description: 'execute javascript for example'
-                    }),
-                    func: 'doIt',
-                    arguments: {
-                        SCRIPT: {
-                            type: ArgumentType.STRING,
-                            defaultValue: '3 + 4'
-                        }
-                    }
-                },
-                {
-                    opcode: 'alert-text',
+                    opcode: 'Run FPGA',
                     blockType: BlockType.COMMAND,
                     blockAllThreads: false,
                     text: formatMessage({
-                        id: 'myExtension.alert',
-                        default: 'alert [TEXT]',
-                        description: 'alert text'
+                        id: 'myExtension.RunFPGA',
+                        default: 'Run FPGA [value]',
+                        description: 'Run on FPGA'
                     }),
-                    func: 'alert',
+                    func: 'run_fpga',
                     arguments: {
-                        TEXT: {
+                        value: {
                             type: ArgumentType.STRING,
-                            defaultValue: 'Hello!'
+                            defaultValue: ''
+                        },
+                    }
+                },
+                {
+                    opcode: 'Input',
+                    blockType: BlockType.REPORTER,
+                    blockAllThreads: false,
+                    text: formatMessage({
+                        id: 'myExtension.Input',
+                        default: 'Input [index]',
+                        description: 'Input block'
+                    }),
+                    func: 'input',
+                    arguments: {
+                        index: {
+                            type: ArgumentType.NUMBER,
+                            defaultValue: '0'
                         }
                     }
                 },
                 {
-                    opcode: 'my-while',
-                    blockType: BlockType.LOOP,
+                    opcode: 'Add',
+                    blockType: BlockType.REPORTER,
                     blockAllThreads: false,
                     text: formatMessage({
-                        id: 'myExtension.myWhile',
-                        default: 'while [CONDITION]',
-                        description: 'loop while'
+                        id: 'myExtension.Add',
+                        default: '[x] + [y]',
+                        description: 'x + y'
                     }),
-                    func: 'myWhile',
+                    func: 'add',
                     arguments: {
-                        CONDITION: {
-                            type: ArgumentType.BOOLEAN,
+                        x: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '0',
+                        },
+                        y: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '0',
+                        }
+                    }
+                },
+                {
+                    opcode: 'Multi',
+                    blockType: BlockType.REPORTER,
+                    blockAllThreads: false,
+                    text: formatMessage({
+                        id: 'myExtension.Multi',
+                        default: '[x] * [y]',
+                        description: 'x * y'
+                    }),
+                    func: 'multi',
+                    arguments: {
+                        x: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '1'
+                        },
+                        y: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '1'
                         }
                     }
                 },

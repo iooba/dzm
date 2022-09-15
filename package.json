@@ -3,10 +3,18 @@
   "version": "0.0.0",
   "scripts": {
     "register": "npx xcratch-register --id=myExtension --gui=../scratch-gui --block=./src/vm/extensions/block --entry=./src/gui/lib/libraries/extensions/entry --core --link --use=extension-support util",
-    "build": "npx xcratch-build --module=myExtension --gui=../scratch-gui --block=./src/vm/extensions/block --entry=./src/gui/lib/libraries/extensions/entry"
+    "build": "npx xcratch-build --module=myExtension --gui=../scratch-gui --block=./src/vm/extensions/block --entry=./src/gui/lib/libraries/extensions/entry",
+    "peg-build": "peggy src/vm/extensions/block/analyzer.pegjs",
+    "dev": "npm-watch"
   },
   "devDependencies": {
+    "npm-watch": "^0.11.0",
+    "peggy": "^2.0.1",
     "xcratch-build": "^0.4.0",
     "xcratch-register": "^0.4.2"
+  },
+  "watch": {
+    "build": "src/**/*.js",
+    "peg-build": "src/**/*.pegjs"
   }
 }
