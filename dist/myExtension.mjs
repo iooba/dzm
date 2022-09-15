@@ -1065,9 +1065,19 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       console.log(JSON.stringify(analyzer.parse(value), null, "\t"));
     }
   }, {
-    key: "input",
-    value: function input(args) {
-      return "in".concat(args.index);
+    key: "output",
+    value: function output(args) {
+      return 0;
+    }
+  }, {
+    key: "assign",
+    value: function assign(args) {
+      return "assign(".concat(args.var, ", ").concat(args.expression, ")");
+    }
+  }, {
+    key: "variable",
+    value: function variable(args) {
+      return "".concat(args.name);
     }
   }, {
     key: "add",
@@ -1106,23 +1116,59 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           arguments: {
             value: {
               type: argumentType.STRING,
-              defaultValue: ''
+              defaultValue: '[program]'
             }
           }
         }, {
-          opcode: 'Input',
+          opcode: 'Output',
           blockType: blockType.REPORTER,
           blockAllThreads: false,
           text: formatMessage({
-            id: 'myExtension.Input',
-            default: 'Input [index]',
-            description: 'Input block'
+            id: 'myExtension.Output',
+            default: 'Output [index]',
+            description: 'Output block'
           }),
-          func: 'input',
+          func: 'output',
           arguments: {
             index: {
               type: argumentType.NUMBER,
               defaultValue: '0'
+            }
+          }
+        }, {
+          opcode: 'Assign',
+          blockType: blockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: 'myExtension.Assign',
+            default: 'Assign [var] = [expression]',
+            description: 'Assign'
+          }),
+          func: 'assign',
+          arguments: {
+            var: {
+              type: argumentType.STRING,
+              defaultValue: 'out0'
+            },
+            expression: {
+              type: argumentType.STRING,
+              defaultValue: '0'
+            }
+          }
+        }, {
+          opcode: 'Variable',
+          blockType: blockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: 'myExtension.Variable',
+            default: 'Var [name]',
+            description: 'Variable block'
+          }),
+          func: 'variable',
+          arguments: {
+            name: {
+              type: argumentType.STRING,
+              defaultValue: 'in0'
             }
           }
         }, {
