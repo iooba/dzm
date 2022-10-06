@@ -4,7 +4,8 @@ import Cast from '../../util/cast';
 import translations from './translations.json';
 import blockIcon from './block-icon.png';
 
-import * as analyzer from "./analyzer"
+import * as analyzer from "./analyzer";
+import { parser } from "./parser";
 
 /**
  * Formatter which is used for translation.
@@ -94,10 +95,13 @@ class ExtensionBlocks {
     }
 
     run_fpga(args) {
-        const value = args.value;
-        const json = JSON.stringify(analyzer.parse(value), null, "  ");
-        console.log(json);
-        return json;
+        const value = analyzer.parse(args.value);
+        console.log(value);
+
+        console.log(JSON.stringify(value, null, "  "));
+
+        const program = parser(value);
+        console.log(program);
     }
 
     output(args) {

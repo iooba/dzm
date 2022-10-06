@@ -1066,6 +1066,45 @@ var analyzer = {
   parse: peg$parse
 };
 
+var parser = function parser(program) {
+  return program.map(function (line) {
+    return "".concat(parser_obj(line), ";");
+  });
+};
+
+var parser_obj = function parser_obj(obj) {
+  if (obj.type === "function") {
+    var args = obj.args;
+
+    switch (obj.name) {
+      case "assign":
+        return "(".concat(parser_obj(args[0]), ") = (").concat(parser_obj(args[1]), ")");
+
+      case "add":
+        return "(".concat(parser_obj(args[0]), ") + (").concat(parser_obj(args[1]), ")");
+
+      case "multi":
+        return "(".concat(parser_obj(args[0]), ") * (").concat(parser_obj(args[1]), ")");
+    }
+  }
+
+  if (obj.type === "input") {
+    return "_i".concat(obj.name);
+  }
+
+  if (obj.type === "output") {
+    return "_o".concat(obj.name);
+  }
+
+  if (obj.type === "ident") {
+    return "".concat(obj.name);
+  }
+
+  if (obj.type === "number") {
+    return "".concat(obj.number);
+  }
+};
+
 /**
  * Formatter which is used for translation.
  * This will be replaced which is used in the runtime.
@@ -1124,10 +1163,11 @@ var ExtensionBlocks = /*#__PURE__*/function () {
   _createClass(ExtensionBlocks, [{
     key: "run_fpga",
     value: function run_fpga(args) {
-      var value = args.value;
-      var json = JSON.stringify(analyzer.parse(value), null, "  ");
-      console.log(json);
-      return json;
+      var value = analyzer.parse(args.value);
+      console.log(value);
+      console.log(JSON.stringify(value, null, "  "));
+      var program = parser(value);
+      console.log(program);
     }
   }, {
     key: "output",
