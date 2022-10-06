@@ -1,6 +1,6 @@
 Expression
-  = head:(Function / Input / Ident / Number) 
-    tail:(Function / Input / Ident / Number)*
+  = head:(Function / Input / Output / Ident / Number) 
+    tail:(Function / Input / Output / Ident / Number)*
     { return [head].concat(tail) }
   
 Function "function"
@@ -16,6 +16,10 @@ Function "function"
 Input "input"
   = "in" name:Integer
   { return { type: "input", name } }
+
+Output "output"
+  = "out" name:Integer
+  { return { type: "output", name } }
 
 Ident "ident"
   = name:String

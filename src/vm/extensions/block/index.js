@@ -95,8 +95,9 @@ class ExtensionBlocks {
 
     run_fpga(args) {
         const value = args.value;
-        console.log({ value });
-        console.log(JSON.stringify(analyzer.parse(value), null, "\t"));
+        const json = JSON.stringify(analyzer.parse(value), null, "  ");
+        console.log(json);
+        return json;
     }
 
     output(args) {
@@ -105,10 +106,6 @@ class ExtensionBlocks {
 
     assign(args) {
         return `assign(${args.var}, ${args.expression})`;
-    }
-
-    variable(args) {
-        return `${args.name}`;
     }
 
     add (args) {
@@ -161,7 +158,7 @@ class ExtensionBlocks {
                     arguments: {
                         index: {
                             type: ArgumentType.NUMBER,
-                            defaultValue: '0'
+                            defaultValue: '1'
                         }
                     }
                 },
@@ -178,29 +175,12 @@ class ExtensionBlocks {
                     arguments: {
                         var: {
                             type: ArgumentType.STRING,
-                            defaultValue: 'out0'
+                            defaultValue: 'out1'
                         },
                         expression: {
                             type: ArgumentType.STRING,
                             defaultValue: '0'
                         },
-                    }
-                },
-                {
-                    opcode: 'Variable',
-                    blockType: BlockType.REPORTER,
-                    blockAllThreads: false,
-                    text: formatMessage({
-                        id: 'myExtension.Variable',
-                        default: 'Var [name]',
-                        description: 'Variable block'
-                    }),
-                    func: 'variable',
-                    arguments: {
-                        name: {
-                            type: ArgumentType.STRING,
-                            defaultValue: 'in0'
-                        }
                     }
                 },
                 {
