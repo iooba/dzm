@@ -116,8 +116,16 @@ class ExtensionBlocks {
         return `add(${args.x}, ${args.y})`;
     }
 
+    sub (args) {
+        return `sub(${args.x}, ${args.y})`;
+    }
+
     multi(args) {
         return `multi(${args.x}, ${args.y})`;
+    }
+
+    div(args) {
+        return `div(${args.x}, ${args.y})`;
     }
 
     /**
@@ -209,6 +217,27 @@ class ExtensionBlocks {
                     }
                 },
                 {
+                    opcode: 'Sub',
+                    blockType: BlockType.REPORTER,
+                    blockAllThreads: false,
+                    text: formatMessage({
+                        id: 'myExtension.Sub',
+                        default: '[x] - [y]',
+                        description: 'x - y'
+                    }),
+                    func: 'sub',
+                    arguments: {
+                        x: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '0',
+                        },
+                        y: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '0',
+                        }
+                    }
+                },
+                {
                     opcode: 'Multi',
                     blockType: BlockType.REPORTER,
                     blockAllThreads: false,
@@ -218,6 +247,27 @@ class ExtensionBlocks {
                         description: 'x * y'
                     }),
                     func: 'multi',
+                    arguments: {
+                        x: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '1'
+                        },
+                        y: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '1'
+                        }
+                    }
+                },
+                {
+                    opcode: 'Div',
+                    blockType: BlockType.REPORTER,
+                    blockAllThreads: false,
+                    text: formatMessage({
+                        id: 'myExtension.Div',
+                        default: '[x] / [y]',
+                        description: 'x / y'
+                    }),
+                    func: 'div',
                     arguments: {
                         x: {
                             type: ArgumentType.STRING,

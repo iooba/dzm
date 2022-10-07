@@ -10,8 +10,12 @@ const parser_obj = (obj) => {
                 return `(${parser_obj(args[0])}) = (${parser_obj(args[1])})`;
             case "add":
                 return `(${parser_obj(args[0])}) + (${parser_obj(args[1])})`;
+            case "sub":
+                return `(${parser_obj(args[0])}) - (${parser_obj(args[1])})`;
             case "multi":
                 return `(${parser_obj(args[0])}) * (${parser_obj(args[1])})`;
+            case "div":
+                return `(${parser_obj(args[0])}) / (${parser_obj(args[1])})`;
         }
     }
 

@@ -1083,8 +1083,14 @@ var parser_obj = function parser_obj(obj) {
       case "add":
         return "(".concat(parser_obj(args[0]), ") + (").concat(parser_obj(args[1]), ")");
 
+      case "sub":
+        return "(".concat(parser_obj(args[0]), ") - (").concat(parser_obj(args[1]), ")");
+
       case "multi":
         return "(".concat(parser_obj(args[0]), ") * (").concat(parser_obj(args[1]), ")");
+
+      case "div":
+        return "(".concat(parser_obj(args[0]), ") / (").concat(parser_obj(args[1]), ")");
     }
   }
 
@@ -1185,9 +1191,19 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       return "add(".concat(args.x, ", ").concat(args.y, ")");
     }
   }, {
+    key: "sub",
+    value: function sub(args) {
+      return "sub(".concat(args.x, ", ").concat(args.y, ")");
+    }
+  }, {
     key: "multi",
     value: function multi(args) {
       return "multi(".concat(args.x, ", ").concat(args.y, ")");
+    }
+  }, {
+    key: "div",
+    value: function div(args) {
+      return "div(".concat(args.x, ", ").concat(args.y, ")");
     }
     /**
      * @returns {object} metadata for this extension and its blocks.
@@ -1276,6 +1292,26 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             }
           }
         }, {
+          opcode: 'Sub',
+          blockType: blockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: 'myExtension.Sub',
+            default: '[x] - [y]',
+            description: 'x - y'
+          }),
+          func: 'sub',
+          arguments: {
+            x: {
+              type: argumentType.STRING,
+              defaultValue: '0'
+            },
+            y: {
+              type: argumentType.STRING,
+              defaultValue: '0'
+            }
+          }
+        }, {
           opcode: 'Multi',
           blockType: blockType.REPORTER,
           blockAllThreads: false,
@@ -1285,6 +1321,26 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             description: 'x * y'
           }),
           func: 'multi',
+          arguments: {
+            x: {
+              type: argumentType.STRING,
+              defaultValue: '1'
+            },
+            y: {
+              type: argumentType.STRING,
+              defaultValue: '1'
+            }
+          }
+        }, {
+          opcode: 'Div',
+          blockType: blockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: 'myExtension.Div',
+            default: '[x] / [y]',
+            description: 'x / y'
+          }),
+          func: 'div',
           arguments: {
             x: {
               type: argumentType.STRING,
