@@ -1066,50 +1066,73 @@ var analyzer = {
   parse: peg$parse
 };
 
-var parser = function parser(program) {
-  return program.map(function (line) {
-    return "".concat(parser_obj(line), ";");
-  });
-};
+var Parser = /*#__PURE__*/function () {
+  function Parser() {
+    _classCallCheck(this, Parser);
 
-var parser_obj = function parser_obj(obj) {
-  if (obj.type === "function") {
-    var args = obj.args;
+    this.vars = {
+      in: new Set(),
+      out: new Set(),
+      ident: new Set()
+    };
+  }
 
-    switch (obj.name) {
-      case "assign":
-        return "(".concat(parser_obj(args[0]), ") = (").concat(parser_obj(args[1]), ")");
+  _createClass(Parser, [{
+    key: "parse",
+    value: function parse(program) {
+      var _this = this;
 
-      case "add":
-        return "(".concat(parser_obj(args[0]), ") + (").concat(parser_obj(args[1]), ")");
-
-      case "sub":
-        return "(".concat(parser_obj(args[0]), ") - (").concat(parser_obj(args[1]), ")");
-
-      case "multi":
-        return "(".concat(parser_obj(args[0]), ") * (").concat(parser_obj(args[1]), ")");
-
-      case "div":
-        return "(".concat(parser_obj(args[0]), ") / (").concat(parser_obj(args[1]), ")");
+      return program.map(function (line) {
+        return "".concat(_this._parse_obj(line), ";");
+      });
     }
-  }
+  }, {
+    key: "_parse_obj",
+    value: function _parse_obj(obj) {
+      if (obj.type === "function") {
+        var args = obj.args;
 
-  if (obj.type === "input") {
-    return "_i".concat(obj.name);
-  }
+        switch (obj.name) {
+          case "assign":
+            return "(".concat(this._parse_obj(args[0]), ") = (").concat(this._parse_obj(args[1]), ")");
 
-  if (obj.type === "output") {
-    return "_o".concat(obj.name);
-  }
+          case "add":
+            return "(".concat(this._parse_obj(args[0]), ") + (").concat(this._parse_obj(args[1]), ")");
 
-  if (obj.type === "ident") {
-    return "".concat(obj.name);
-  }
+          case "sub":
+            return "(".concat(this._parse_obj(args[0]), ") - (").concat(this._parse_obj(args[1]), ")");
 
-  if (obj.type === "number") {
-    return "".concat(obj.number);
-  }
-};
+          case "multi":
+            return "(".concat(this._parse_obj(args[0]), ") * (").concat(this._parse_obj(args[1]), ")");
+
+          case "div":
+            return "(".concat(this._parse_obj(args[0]), ") / (").concat(this._parse_obj(args[1]), ")");
+        }
+      }
+
+      if (obj.type === "input") {
+        this.vars.in.add("i".concat(obj.name));
+        return "i".concat(obj.name);
+      }
+
+      if (obj.type === "output") {
+        this.vars.out.add("o".concat(obj.name));
+        return "o".concat(obj.name);
+      }
+
+      if (obj.type === "ident") {
+        this.vars.ident.add("".concat(obj.name));
+        return "".concat(obj.name);
+      }
+
+      if (obj.type === "number") {
+        return "".concat(obj.number);
+      }
+    }
+  }]);
+
+  return Parser;
+}();
 
 /**
  * Formatter which is used for translation.
@@ -1172,8 +1195,10 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       var value = analyzer.parse(args.value);
       console.log(value);
       console.log(JSON.stringify(value, null, "  "));
-      var program = parser(value);
+      var parser = new Parser();
+      var program = parser.parse(value);
       console.log(program);
+      console.log(parser.vars);
     }
   }, {
     key: "output",

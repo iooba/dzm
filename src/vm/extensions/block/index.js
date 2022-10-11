@@ -5,7 +5,7 @@ import translations from './translations.json';
 import blockIcon from './block-icon.png';
 
 import * as analyzer from "./analyzer";
-import { parser } from "./parser";
+import { Parser } from "./parser";
 
 /**
  * Formatter which is used for translation.
@@ -100,8 +100,10 @@ class ExtensionBlocks {
 
         console.log(JSON.stringify(value, null, "  "));
 
-        const program = parser(value);
+        const parser = new Parser();
+        const program = parser.parse(value);
         console.log(program);
+        console.log(parser.vars);
     }
 
     output(args) {
