@@ -369,25 +369,19 @@ function peg$parse(input, options) {
   var peg$c0 = "(";
   var peg$c1 = ",";
   var peg$c2 = ")";
-  var peg$c3 = "in";
-  var peg$c4 = "out";
   var peg$r0 = /^[a-zA-Z]/;
   var peg$r1 = /^[0-9]/;
-  var peg$r2 = /^[ \t\n\r]/;
+  var peg$r2 = /^[ \t\f\r\n\v]/;
   var peg$e0 = peg$otherExpectation("function");
   var peg$e1 = peg$literalExpectation("(", false);
   var peg$e2 = peg$literalExpectation(",", false);
   var peg$e3 = peg$literalExpectation(")", false);
-  var peg$e4 = peg$otherExpectation("input");
-  var peg$e5 = peg$literalExpectation("in", false);
-  var peg$e6 = peg$otherExpectation("output");
-  var peg$e7 = peg$literalExpectation("out", false);
-  var peg$e8 = peg$otherExpectation("ident");
-  var peg$e9 = peg$otherExpectation("number");
-  var peg$e10 = peg$classExpectation([["a", "z"], ["A", "Z"]], false, false);
-  var peg$e11 = peg$classExpectation([["0", "9"]], false, false);
-  var peg$e12 = peg$otherExpectation("whitespace");
-  var peg$e13 = peg$classExpectation([" ", "\t", "\n", "\r"], false, false);
+  var peg$e4 = peg$otherExpectation("ident");
+  var peg$e5 = peg$otherExpectation("number");
+  var peg$e6 = peg$classExpectation([["a", "z"], ["A", "Z"]], false, false);
+  var peg$e7 = peg$classExpectation([["0", "9"]], false, false);
+  var peg$e8 = peg$otherExpectation("whitespace");
+  var peg$e9 = peg$classExpectation([" ", "\t", "\f", "\r", "\n", "\v"], false, false);
 
   var peg$f0 = function peg$f0(head, tail) {
     return [head].concat(tail);
@@ -405,39 +399,26 @@ function peg$parse(input, options) {
     };
   };
 
-  var peg$f3 = function peg$f3(name) {
-    return {
-      type: "input",
-      name: name
-    };
-  };
-
-  var peg$f4 = function peg$f4(name) {
-    return {
-      type: "output",
-      name: name
-    };
-  };
-
-  var peg$f5 = function peg$f5(name) {
+  var peg$f3 = function peg$f3(name, index) {
     return {
       type: "ident",
-      name: name
+      name: name,
+      index: index
     };
   };
 
-  var peg$f6 = function peg$f6(number) {
+  var peg$f4 = function peg$f4(number) {
     return {
       type: "number",
       number: number
     };
   };
 
-  var peg$f7 = function peg$f7(text) {
+  var peg$f5 = function peg$f5(text) {
     return text.join("");
   };
 
-  var peg$f8 = function peg$f8() {
+  var peg$f6 = function peg$f6() {
     return parseInt(text(), 10);
   };
 
@@ -570,18 +551,10 @@ function peg$parse(input, options) {
     s1 = peg$parseFunction();
 
     if (s1 === peg$FAILED) {
-      s1 = peg$parseInput();
+      s1 = peg$parseIdent();
 
       if (s1 === peg$FAILED) {
-        s1 = peg$parseOutput();
-
-        if (s1 === peg$FAILED) {
-          s1 = peg$parseIdent();
-
-          if (s1 === peg$FAILED) {
-            s1 = peg$parseNumber();
-          }
-        }
+        s1 = peg$parseNumber();
       }
     }
 
@@ -590,18 +563,10 @@ function peg$parse(input, options) {
       s3 = peg$parseFunction();
 
       if (s3 === peg$FAILED) {
-        s3 = peg$parseInput();
+        s3 = peg$parseIdent();
 
         if (s3 === peg$FAILED) {
-          s3 = peg$parseOutput();
-
-          if (s3 === peg$FAILED) {
-            s3 = peg$parseIdent();
-
-            if (s3 === peg$FAILED) {
-              s3 = peg$parseNumber();
-            }
-          }
+          s3 = peg$parseNumber();
         }
       }
 
@@ -610,18 +575,10 @@ function peg$parse(input, options) {
         s3 = peg$parseFunction();
 
         if (s3 === peg$FAILED) {
-          s3 = peg$parseInput();
+          s3 = peg$parseIdent();
 
           if (s3 === peg$FAILED) {
-            s3 = peg$parseOutput();
-
-            if (s3 === peg$FAILED) {
-              s3 = peg$parseIdent();
-
-              if (s3 === peg$FAILED) {
-                s3 = peg$parseNumber();
-              }
-            }
+            s3 = peg$parseNumber();
           }
         }
       }
@@ -775,32 +732,21 @@ function peg$parse(input, options) {
     return s0;
   }
 
-  function peg$parseInput() {
+  function peg$parseIdent() {
     var s0, s1, s2;
     peg$silentFails++;
     s0 = peg$currPos;
-
-    if (input.substr(peg$currPos, 2) === peg$c3) {
-      s1 = peg$c3;
-      peg$currPos += 2;
-    } else {
-      s1 = peg$FAILED;
-
-      if (peg$silentFails === 0) {
-        peg$fail(peg$e5);
-      }
-    }
+    s1 = peg$parseString();
 
     if (s1 !== peg$FAILED) {
       s2 = peg$parseInteger();
 
-      if (s2 !== peg$FAILED) {
-        peg$savedPos = s0;
-        s0 = peg$f3(s2);
-      } else {
-        peg$currPos = s0;
-        s0 = peg$FAILED;
+      if (s2 === peg$FAILED) {
+        s2 = null;
       }
+
+      peg$savedPos = s0;
+      s0 = peg$f3(s1, s2);
     } else {
       peg$currPos = s0;
       s0 = peg$FAILED;
@@ -819,75 +765,6 @@ function peg$parse(input, options) {
     return s0;
   }
 
-  function peg$parseOutput() {
-    var s0, s1, s2;
-    peg$silentFails++;
-    s0 = peg$currPos;
-
-    if (input.substr(peg$currPos, 3) === peg$c4) {
-      s1 = peg$c4;
-      peg$currPos += 3;
-    } else {
-      s1 = peg$FAILED;
-
-      if (peg$silentFails === 0) {
-        peg$fail(peg$e7);
-      }
-    }
-
-    if (s1 !== peg$FAILED) {
-      s2 = peg$parseInteger();
-
-      if (s2 !== peg$FAILED) {
-        peg$savedPos = s0;
-        s0 = peg$f4(s2);
-      } else {
-        peg$currPos = s0;
-        s0 = peg$FAILED;
-      }
-    } else {
-      peg$currPos = s0;
-      s0 = peg$FAILED;
-    }
-
-    peg$silentFails--;
-
-    if (s0 === peg$FAILED) {
-      s1 = peg$FAILED;
-
-      if (peg$silentFails === 0) {
-        peg$fail(peg$e6);
-      }
-    }
-
-    return s0;
-  }
-
-  function peg$parseIdent() {
-    var s0, s1;
-    peg$silentFails++;
-    s0 = peg$currPos;
-    s1 = peg$parseString();
-
-    if (s1 !== peg$FAILED) {
-      peg$savedPos = s0;
-      s1 = peg$f5(s1);
-    }
-
-    s0 = s1;
-    peg$silentFails--;
-
-    if (s0 === peg$FAILED) {
-      s1 = peg$FAILED;
-
-      if (peg$silentFails === 0) {
-        peg$fail(peg$e8);
-      }
-    }
-
-    return s0;
-  }
-
   function peg$parseNumber() {
     var s0, s1;
     peg$silentFails++;
@@ -896,7 +773,7 @@ function peg$parse(input, options) {
 
     if (s1 !== peg$FAILED) {
       peg$savedPos = s0;
-      s1 = peg$f6(s1);
+      s1 = peg$f4(s1);
     }
 
     s0 = s1;
@@ -906,7 +783,7 @@ function peg$parse(input, options) {
       s1 = peg$FAILED;
 
       if (peg$silentFails === 0) {
-        peg$fail(peg$e9);
+        peg$fail(peg$e5);
       }
     }
 
@@ -926,7 +803,7 @@ function peg$parse(input, options) {
       s3 = peg$FAILED;
 
       if (peg$silentFails === 0) {
-        peg$fail(peg$e10);
+        peg$fail(peg$e6);
       }
     }
 
@@ -941,7 +818,7 @@ function peg$parse(input, options) {
           s3 = peg$FAILED;
 
           if (peg$silentFails === 0) {
-            peg$fail(peg$e10);
+            peg$fail(peg$e6);
           }
         }
       }
@@ -951,7 +828,7 @@ function peg$parse(input, options) {
 
     if (s2 !== peg$FAILED) {
       peg$savedPos = s0;
-      s0 = peg$f7(s2);
+      s0 = peg$f5(s2);
     } else {
       peg$currPos = s0;
       s0 = peg$FAILED;
@@ -973,7 +850,7 @@ function peg$parse(input, options) {
       s3 = peg$FAILED;
 
       if (peg$silentFails === 0) {
-        peg$fail(peg$e11);
+        peg$fail(peg$e7);
       }
     }
 
@@ -988,7 +865,7 @@ function peg$parse(input, options) {
           s3 = peg$FAILED;
 
           if (peg$silentFails === 0) {
-            peg$fail(peg$e11);
+            peg$fail(peg$e7);
           }
         }
       }
@@ -998,7 +875,7 @@ function peg$parse(input, options) {
 
     if (s2 !== peg$FAILED) {
       peg$savedPos = s0;
-      s0 = peg$f8();
+      s0 = peg$f6();
     } else {
       peg$currPos = s0;
       s0 = peg$FAILED;
@@ -1019,7 +896,7 @@ function peg$parse(input, options) {
       s1 = peg$FAILED;
 
       if (peg$silentFails === 0) {
-        peg$fail(peg$e13);
+        peg$fail(peg$e9);
       }
     }
 
@@ -1033,7 +910,7 @@ function peg$parse(input, options) {
         s1 = peg$FAILED;
 
         if (peg$silentFails === 0) {
-          peg$fail(peg$e13);
+          peg$fail(peg$e9);
         }
       }
     }
@@ -1042,7 +919,7 @@ function peg$parse(input, options) {
     s1 = peg$FAILED;
 
     if (peg$silentFails === 0) {
-      peg$fail(peg$e12);
+      peg$fail(peg$e8);
     }
 
     return s0;
@@ -1070,11 +947,7 @@ var Parser = /*#__PURE__*/function () {
   function Parser() {
     _classCallCheck(this, Parser);
 
-    this.vars = {
-      in: new Set(),
-      out: new Set(),
-      ident: new Set()
-    };
+    this.vars = new Set();
   }
 
   _createClass(Parser, [{
@@ -1082,47 +955,61 @@ var Parser = /*#__PURE__*/function () {
     value: function parse(program) {
       var _this = this;
 
-      return program.map(function (line) {
-        return "".concat(_this._parse_obj(line), ";");
-      });
+      return "\n`timescale 1ns / 1ps\n\nmodule moduleName (\n  input [3:0] BTN,\n  input [3:0] SW,\n  output [3:0] LED\n);\n\n".concat(program.map(function (line) {
+        return _this._parse_obj(line);
+      }).join("\n"), "\n\nendmodule");
     }
   }, {
     key: "_parse_obj",
     value: function _parse_obj(obj) {
+      var _this2 = this;
+
       if (obj.type === "function") {
-        var args = obj.args;
+        var args = obj.args.map(function (arg) {
+          return _this2._parse_obj(arg);
+        });
 
         switch (obj.name) {
           case "assign":
-            return "(".concat(this._parse_obj(args[0]), ") = (").concat(this._parse_obj(args[1]), ")");
+            return "assign ".concat(args[0], " = ").concat(args[1], ";");
 
           case "add":
-            return "(".concat(this._parse_obj(args[0]), ") + (").concat(this._parse_obj(args[1]), ")");
+            return "(".concat(args[0], ") + (").concat(args[1], ")");
 
           case "sub":
-            return "(".concat(this._parse_obj(args[0]), ") - (").concat(this._parse_obj(args[1]), ")");
+            return "(".concat(args[0], ") - (").concat(args[1], ")");
 
           case "multi":
-            return "(".concat(this._parse_obj(args[0]), ") * (").concat(this._parse_obj(args[1]), ")");
+            return "(".concat(args[0], ") * (").concat(args[1], ")");
 
           case "div":
-            return "(".concat(this._parse_obj(args[0]), ") / (").concat(this._parse_obj(args[1]), ")");
+            return "(".concat(args[0], ") / (").concat(args[1], ")");
+
+          case "and":
+            return "(".concat(args[0], ") & (").concat(args[1], ")");
+
+          case "or":
+            return "(".concat(args[0], ") | (").concat(args[1], ")");
+
+          case "xor":
+            return "(".concat(args[0], ") ^ (").concat(args[1], ")");
         }
       }
 
-      if (obj.type === "input") {
-        this.vars.in.add("i".concat(obj.name));
-        return "i".concat(obj.name);
-      }
-
-      if (obj.type === "output") {
-        this.vars.out.add("o".concat(obj.name));
-        return "o".concat(obj.name);
-      }
-
       if (obj.type === "ident") {
-        this.vars.ident.add("".concat(obj.name));
-        return "".concat(obj.name);
+        var name = obj.name;
+        var index = obj.index;
+
+        if (["LED", "BTN", "SW"].includes(name)) {
+          if (index !== null) {
+            return "".concat(name, "[").concat(index, "]");
+          } else {
+            return name;
+          }
+        }
+
+        this.vars.add("".concat(name).concat(index));
+        return "".concat(name).concat(index);
       }
 
       if (obj.type === "number") {
@@ -1157,14 +1044,14 @@ var setupTranslations = function setupTranslations() {
   }
 };
 
-var EXTENSION_ID = 'myExtension';
+var EXTENSION_ID = "myExtension";
 /**
  * URL to get this extension as a module.
  * When it was loaded as a module, 'extensionURL' will be replaced a URL which is retrieved from.
  * @type {string}
  */
 
-var extensionURL = 'https://HitsujiRere.github.io/xcx-my-extension/dist/myExtension.mjs';
+var extensionURL = "https://HitsujiRere.github.io/xcx-my-extension/dist/myExtension.mjs";
 /**
  * Scratch 3.0 blocks for example of Xcratch.
  */
@@ -1201,11 +1088,6 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       console.log(parser.vars);
     }
   }, {
-    key: "output",
-    value: function output(args) {
-      return 0;
-    }
-  }, {
     key: "assign",
     value: function assign(args) {
       return "assign(".concat(args.var, ", ").concat(args.expression, ")");
@@ -1230,6 +1112,21 @@ var ExtensionBlocks = /*#__PURE__*/function () {
     value: function div(args) {
       return "div(".concat(args.x, ", ").concat(args.y, ")");
     }
+  }, {
+    key: "and",
+    value: function and(args) {
+      return "and(".concat(args.x, ", ").concat(args.y, ")");
+    }
+  }, {
+    key: "or",
+    value: function or(args) {
+      return "or(".concat(args.x, ", ").concat(args.y, ")");
+    }
+  }, {
+    key: "xor",
+    value: function xor(args) {
+      return "xor(".concat(args.x, ", ").concat(args.y, ")");
+    }
     /**
      * @returns {object} metadata for this extension and its blocks.
      */
@@ -1245,135 +1142,179 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         blockIconURI: img,
         showStatusButton: false,
         blocks: [{
-          opcode: 'Run FPGA',
+          opcode: "Run FPGA",
           blockType: blockType.COMMAND,
           blockAllThreads: false,
           text: formatMessage({
-            id: 'myExtension.RunFPGA',
-            default: 'Run FPGA [value]',
-            description: 'Run on FPGA'
+            id: "myExtension.RunFPGA",
+            default: "Run FPGA [value]",
+            description: "Run on FPGA"
           }),
-          func: 'run_fpga',
+          func: "run_fpga",
           arguments: {
             value: {
               type: argumentType.STRING,
-              defaultValue: '[program]'
+              defaultValue: "[program]"
             }
           }
         }, {
-          opcode: 'Output',
+          opcode: "Assign",
           blockType: blockType.REPORTER,
           blockAllThreads: false,
           text: formatMessage({
-            id: 'myExtension.Output',
-            default: 'Output [index]',
-            description: 'Output block'
+            id: "myExtension.Assign",
+            default: "Assign [var] = [expression]",
+            description: "Assign"
           }),
-          func: 'output',
-          arguments: {
-            index: {
-              type: argumentType.NUMBER,
-              defaultValue: '1'
-            }
-          }
-        }, {
-          opcode: 'Assign',
-          blockType: blockType.REPORTER,
-          blockAllThreads: false,
-          text: formatMessage({
-            id: 'myExtension.Assign',
-            default: 'Assign [var] = [expression]',
-            description: 'Assign'
-          }),
-          func: 'assign',
+          func: "assign",
           arguments: {
             var: {
               type: argumentType.STRING,
-              defaultValue: 'out1'
+              defaultValue: "LED0"
             },
             expression: {
               type: argumentType.STRING,
-              defaultValue: '0'
+              defaultValue: "0"
             }
           }
         }, {
-          opcode: 'Add',
+          opcode: "Add",
           blockType: blockType.REPORTER,
           blockAllThreads: false,
           text: formatMessage({
-            id: 'myExtension.Add',
-            default: '[x] + [y]',
-            description: 'x + y'
+            id: "myExtension.Add",
+            default: "[x] + [y]",
+            description: "x + y"
           }),
-          func: 'add',
+          func: "add",
           arguments: {
             x: {
               type: argumentType.STRING,
-              defaultValue: '0'
+              defaultValue: "0"
             },
             y: {
               type: argumentType.STRING,
-              defaultValue: '0'
+              defaultValue: "0"
             }
           }
         }, {
-          opcode: 'Sub',
+          opcode: "Sub",
           blockType: blockType.REPORTER,
           blockAllThreads: false,
           text: formatMessage({
-            id: 'myExtension.Sub',
-            default: '[x] - [y]',
-            description: 'x - y'
+            id: "myExtension.Sub",
+            default: "[x] - [y]",
+            description: "x - y"
           }),
-          func: 'sub',
+          func: "sub",
           arguments: {
             x: {
               type: argumentType.STRING,
-              defaultValue: '0'
+              defaultValue: "0"
             },
             y: {
               type: argumentType.STRING,
-              defaultValue: '0'
+              defaultValue: "0"
             }
           }
         }, {
-          opcode: 'Multi',
+          opcode: "Multi",
           blockType: blockType.REPORTER,
           blockAllThreads: false,
           text: formatMessage({
-            id: 'myExtension.Multi',
-            default: '[x] * [y]',
-            description: 'x * y'
+            id: "myExtension.Multi",
+            default: "[x] * [y]",
+            description: "x * y"
           }),
-          func: 'multi',
+          func: "multi",
           arguments: {
             x: {
               type: argumentType.STRING,
-              defaultValue: '1'
+              defaultValue: "1"
             },
             y: {
               type: argumentType.STRING,
-              defaultValue: '1'
+              defaultValue: "1"
             }
           }
         }, {
-          opcode: 'Div',
+          opcode: "Div",
           blockType: blockType.REPORTER,
           blockAllThreads: false,
           text: formatMessage({
-            id: 'myExtension.Div',
-            default: '[x] / [y]',
-            description: 'x / y'
+            id: "myExtension.Div",
+            default: "[x] / [y]",
+            description: "x / y"
           }),
-          func: 'div',
+          func: "div",
           arguments: {
             x: {
               type: argumentType.STRING,
-              defaultValue: '1'
+              defaultValue: "1"
             },
             y: {
               type: argumentType.STRING,
-              defaultValue: '1'
+              defaultValue: "1"
+            }
+          }
+        }, {
+          opcode: "And",
+          blockType: blockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "myExtension.And",
+            default: "[x] & [y]",
+            description: "x & y"
+          }),
+          func: "and",
+          arguments: {
+            x: {
+              type: argumentType.STRING,
+              defaultValue: "1"
+            },
+            y: {
+              type: argumentType.STRING,
+              defaultValue: "1"
+            }
+          }
+        }, {
+          opcode: "Or",
+          blockType: blockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "myExtension.Or",
+            default: "[x] | [y]",
+            description: "x | y"
+          }),
+          func: "or",
+          arguments: {
+            x: {
+              type: argumentType.STRING,
+              defaultValue: "1"
+            },
+            y: {
+              type: argumentType.STRING,
+              defaultValue: "1"
+            }
+          }
+        }, {
+          opcode: "Xor",
+          blockType: blockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "myExtension.Xor",
+            default: "[x] ^ [y]",
+            description: "x ^ y"
+          }),
+          func: "xor",
+          arguments: {
+            x: {
+              type: argumentType.STRING,
+              defaultValue: "1"
+            },
+            y: {
+              type: argumentType.STRING,
+              defaultValue: "1"
             }
           }
         }],
@@ -1388,9 +1329,9 @@ var ExtensionBlocks = /*#__PURE__*/function () {
      */
     function get() {
       return formatMessage({
-        id: 'myExtension.name',
-        default: 'My Extension',
-        description: 'name of the extension'
+        id: "myExtension.name",
+        default: "My Extension",
+        description: "name of the extension"
       });
     }
     /**

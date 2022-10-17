@@ -1,8 +1,8 @@
 Expression
-  = head:(Function / Input / Output / Ident / Number) 
-    tail:(Function / Input / Output / Ident / Number)*
+  = head:(Function / Ident / Number) 
+    tail:(Function / Ident / Number)*
     { return [head].concat(tail) }
-  
+
 Function "function"
   = name:String "(" _
     args:(
@@ -13,17 +13,9 @@ Function "function"
     _ ")" 
     { return { type: "function", name, args: args.flat() || [] } }
 
-Input "input"
-  = "in" name:Integer
-  { return { type: "input", name } }
-
-Output "output"
-  = "out" name:Integer
-  { return { type: "output", name } }
-
 Ident "ident"
-  = name:String
-  { return { type: "ident", name } }
+  = name:String index:Integer?
+  { return { type: "ident", name, index } }
 
 Number "number"
   = number:Integer
@@ -36,4 +28,4 @@ Integer
   = _ [0-9]+ { return parseInt(text(), 10); }
 
 _ "whitespace"
-  = [ \t\n\r]*
+  = [ \t\f\r\n\v]*
