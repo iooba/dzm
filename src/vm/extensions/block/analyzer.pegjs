@@ -11,7 +11,7 @@ Function "function"
       { return [head].concat(tail); }
     )?
     _ ")" 
-    { return { type: "function", name, args: args.flat() || [] } }
+    { return { type: "function", name, args: args ? args.flat() : [] } }
 
 Ident "ident"
   = name:String index:Integer?

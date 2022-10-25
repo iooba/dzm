@@ -101,12 +101,17 @@ class ExtensionBlocks {
 
     const parser = new Parser();
     const program = parser.parse(value);
+
+    // Velilog Program
     console.log(program);
-    console.log(parser.vars);
   }
 
   assign(args) {
     return `assign(${args.var}, ${args.expression})`;
+  }
+
+  blink1s(args) {
+    return `blink(${args.sec})`;
   }
 
   add(args) {
@@ -155,7 +160,7 @@ class ExtensionBlocks {
           blockAllThreads: false,
           text: formatMessage({
             id: "myExtension.RunFPGA",
-            default: "Run FPGA [value]",
+            default: "[value] をVelilogに変換する",
             description: "Run on FPGA",
           }),
           func: "run_fpga",
@@ -172,7 +177,7 @@ class ExtensionBlocks {
           blockAllThreads: false,
           text: formatMessage({
             id: "myExtension.Assign",
-            default: "Assign [var] = [expression]",
+            default: "[var] を [expression] にする",
             description: "Assign",
           }),
           func: "assign",
@@ -184,6 +189,23 @@ class ExtensionBlocks {
             expression: {
               type: ArgumentType.STRING,
               defaultValue: "0",
+            },
+          },
+        },
+        {
+          opcode: "Blink1s",
+          blockType: BlockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "myExtension.Blink1s",
+            default: "[sec] 秒ごとにON/OFF",
+            description: "Blink",
+          }),
+          func: "blink1s",
+          arguments: {
+            sec: {
+              type: ArgumentType.NUMBER,
+              defaultValue: "1",
             },
           },
         },

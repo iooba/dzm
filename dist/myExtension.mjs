@@ -395,7 +395,7 @@ function peg$parse(input, options) {
     return {
       type: "function",
       name: name,
-      args: args.flat() || []
+      args: args ? args.flat() : []
     };
   };
 
@@ -948,6 +948,7 @@ var Parser = /*#__PURE__*/function () {
     _classCallCheck(this, Parser);
 
     this.vars = new Set();
+    this.modules = new Set();
   }
 
   _createClass(Parser, [{
@@ -955,9 +956,17 @@ var Parser = /*#__PURE__*/function () {
     value: function parse(program) {
       var _this = this;
 
-      return "\n`timescale 1ns / 1ps\n\nmodule moduleName (\n  input [3:0] BTN,\n  input [3:0] SW,\n  output [3:0] LED\n);\n\n".concat(program.map(function (line) {
+      var codes = program.map(function (line) {
         return _this._parse_obj(line);
-      }).join("\n"), "\n\nendmodule");
+      });
+
+      var moduleCodes = this.__declare_modules();
+
+      console.log(this.vars);
+
+      var varCodes = this.__declare_vars();
+
+      return "\n`timescale 1ns / 1ps\n\n".concat(moduleCodes.module.join("\n"), "\n\nmodule moduleName (\n  input CLK,\n  input [3:0] BTN,\n  input [3:0] SW,\n  output [3:0] LED\n);\n\n  ").concat(moduleCodes.var.join("\n  "), "\n\n  ").concat(varCodes.join("\n  "), "\n\n  ").concat(codes.join("\n  "), "\n\nendmodule");
     }
   }, {
     key: "_parse_obj",
@@ -993,6 +1002,15 @@ var Parser = /*#__PURE__*/function () {
 
           case "xor":
             return "(".concat(args[0], ") ^ (").concat(args[1], ")");
+
+          case "blink":
+            this.modules.add("Blink");
+            var clock = args[0] * 125000000 - 1;
+            this.vars.add(JSON.stringify({
+              type: "Blink",
+              clock: clock
+            }));
+            return "blink_".concat(clock);
         }
       }
 
@@ -1006,15 +1024,54 @@ var Parser = /*#__PURE__*/function () {
           } else {
             return name;
           }
-        }
+        } // TODO: 自動生成
 
-        this.vars.add("".concat(name).concat(index));
+
         return "".concat(name).concat(index);
       }
 
       if (obj.type === "number") {
         return "".concat(obj.number);
       }
+    }
+  }, {
+    key: "__declare_modules",
+    value: function __declare_modules() {
+      var varCodes = [];
+      var moduleCodes = [];
+      this.modules.forEach(function (value) {
+        switch (value) {
+          case "Blink":
+            moduleCodes.push("\nmodule Blink (\n  input CLK,\n  output LED\n);\n\n  // default 1sec\n  parameter CNT_MAX = 31'd124999999;\n  reg [30:0] cnt = 31'd0;\n  reg led = 1'd0;\n\n  always @(posedge CLK) begin\n    if (cnt == CNT_MAX) begin\n      cnt <= 30'd0;\n      led <= ~led;\n    end\n    else begin\n      cnt <= cnt + 30'd1;\n    end\n  end\n  \n  assign LED = led;\n    \nendmodule".split("\n")); // varCodes.push(["wire blink1s;", "Blink1s Blink(CLK, blink1s);"]);
+
+            break;
+        }
+      });
+      return {
+        var: varCodes.flatMap(function (x) {
+          return x;
+        }),
+        module: moduleCodes.flatMap(function (x) {
+          return x;
+        })
+      };
+    }
+  }, {
+    key: "__declare_vars",
+    value: function __declare_vars() {
+      var varCodes = [];
+      this.vars.forEach(function (v) {
+        var value = JSON.parse(v);
+
+        switch (value.type) {
+          case "Blink":
+            varCodes.push(["wire blink_".concat(value.clock, ";"), "defparam Blink_".concat(value.clock, ".CNT_MAX = 31'd").concat(value.clock, ";"), "Blink Blink_".concat(value.clock, "(CLK,blink_").concat(value.clock, ");")]);
+            break;
+        }
+      });
+      return varCodes.flatMap(function (x) {
+        return x;
+      });
     }
   }]);
 
@@ -1083,14 +1140,19 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       console.log(value);
       console.log(JSON.stringify(value, null, "  "));
       var parser = new Parser();
-      var program = parser.parse(value);
+      var program = parser.parse(value); // Velilog Program
+
       console.log(program);
-      console.log(parser.vars);
     }
   }, {
     key: "assign",
     value: function assign(args) {
       return "assign(".concat(args.var, ", ").concat(args.expression, ")");
+    }
+  }, {
+    key: "blink1s",
+    value: function blink1s(args) {
+      return "blink(".concat(args.sec, ")");
     }
   }, {
     key: "add",
@@ -1147,7 +1209,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           blockAllThreads: false,
           text: formatMessage({
             id: "myExtension.RunFPGA",
-            default: "Run FPGA [value]",
+            default: "[value] をVelilogに変換する",
             description: "Run on FPGA"
           }),
           func: "run_fpga",
@@ -1163,7 +1225,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           blockAllThreads: false,
           text: formatMessage({
             id: "myExtension.Assign",
-            default: "Assign [var] = [expression]",
+            default: "[var] を [expression] にする",
             description: "Assign"
           }),
           func: "assign",
@@ -1175,6 +1237,22 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             expression: {
               type: argumentType.STRING,
               defaultValue: "0"
+            }
+          }
+        }, {
+          opcode: "Blink1s",
+          blockType: blockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "myExtension.Blink1s",
+            default: "[sec] 秒ごとにON/OFF",
+            description: "Blink"
+          }),
+          func: "blink1s",
+          arguments: {
+            sec: {
+              type: argumentType.NUMBER,
+              defaultValue: "1"
             }
           }
         }, {
