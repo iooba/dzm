@@ -98,7 +98,7 @@ module Blink (
   output LED
 );
 
-  // default 1sec
+  // default 1sec, max 10sec
   parameter CNT_MAX = 31'd124999999;
   reg [30:0] cnt = 31'd0;
   reg led = 1'd0;
@@ -137,8 +137,8 @@ endmodule`.split("\n")
         case "Blink":
           varCodes.push([
             `wire blink_${value.clock};`,
-            `defparam Blink_${value.clock}.CNT_MAX = 31'd${value.clock};`,
             `Blink Blink_${value.clock}(CLK,blink_${value.clock});`,
+            `defparam Blink_${value.clock}.CNT_MAX = 31'd${value.clock};`,
           ]);
           break;
       }
