@@ -107,12 +107,12 @@ class ExtensionBlocks {
     return navigator.clipboard
       .writeText(program)
       .then(() => {
-        console.log("Success to write to clipboard!");
-        return "Success to write to clipboard!";
+        console.log("Copied to clipboard.");
+        return "Copied to clipboard.";
       })
       .catch(() => {
-        console.log("Failed to write to clipboard!");
-        return "Failed to write to clipboard!";
+        console.log("Copy to clipboard failed.");
+        return "Copy to clipboard failed.";
       });
   }
 
