@@ -1042,7 +1042,7 @@ var Parser = /*#__PURE__*/function () {
       this.modules.forEach(function (value) {
         switch (value) {
           case "Blink":
-            moduleCodes.push("\nmodule Blink (\n  input CLK,\n  output LED\n);\n\n  // default 1sec\n  parameter CNT_MAX = 31'd124999999;\n  reg [30:0] cnt = 31'd0;\n  reg led = 1'd0;\n\n  always @(posedge CLK) begin\n    if (cnt == CNT_MAX) begin\n      cnt <= 30'd0;\n      led <= ~led;\n    end\n    else begin\n      cnt <= cnt + 30'd1;\n    end\n  end\n  \n  assign LED = led;\n    \nendmodule".split("\n")); // varCodes.push(["wire blink1s;", "Blink1s Blink(CLK, blink1s);"]);
+            moduleCodes.push("\nmodule Blink (\n  input CLK,\n  output LED\n);\n\n  // default 1sec, max 10sec\n  parameter CNT_MAX = 31'd124999999;\n  reg [30:0] cnt = 31'd0;\n  reg led = 1'd0;\n\n  always @(posedge CLK) begin\n    if (cnt == CNT_MAX) begin\n      cnt <= 30'd0;\n      led <= ~led;\n    end\n    else begin\n      cnt <= cnt + 30'd1;\n    end\n  end\n  \n  assign LED = led;\n    \nendmodule".split("\n")); // varCodes.push(["wire blink1s;", "Blink1s Blink(CLK, blink1s);"]);
 
             break;
         }
@@ -1065,7 +1065,7 @@ var Parser = /*#__PURE__*/function () {
 
         switch (value.type) {
           case "Blink":
-            varCodes.push(["wire blink_".concat(value.clock, ";"), "defparam Blink_".concat(value.clock, ".CNT_MAX = 31'd").concat(value.clock, ";"), "Blink Blink_".concat(value.clock, "(CLK,blink_").concat(value.clock, ");")]);
+            varCodes.push(["wire blink_".concat(value.clock, ";"), "Blink Blink_".concat(value.clock, "(CLK,blink_").concat(value.clock, ");"), "defparam Blink_".concat(value.clock, ".CNT_MAX = 31'd").concat(value.clock, ";")]);
             break;
         }
       });
@@ -1140,9 +1140,15 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       console.log(value);
       console.log(JSON.stringify(value, null, "  "));
       var parser = new Parser();
-      var program = parser.parse(value); // Velilog Program
-
+      var program = parser.parse(value);
       console.log(program);
+      return navigator.clipboard.writeText(program).then(function () {
+        console.log("Success to write to clipboard!");
+        return "Success to write to clipboard!";
+      }).catch(function () {
+        console.log("Failed to write to clipboard!");
+        return "Failed to write to clipboard!";
+      });
     }
   }, {
     key: "assign",

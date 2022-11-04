@@ -102,8 +102,18 @@ class ExtensionBlocks {
     const parser = new Parser();
     const program = parser.parse(value);
 
-    // Velilog Program
     console.log(program);
+
+    return navigator.clipboard
+      .writeText(program)
+      .then(() => {
+        console.log("Success to write to clipboard!");
+        return "Success to write to clipboard!";
+      })
+      .catch(() => {
+        console.log("Failed to write to clipboard!");
+        return "Failed to write to clipboard!";
+      });
   }
 
   assign(args) {
