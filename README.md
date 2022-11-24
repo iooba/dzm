@@ -1,49 +1,27 @@
-# My Extension
-An example extension for [Xcratch](https://xcratch.github.io/)
+# ScratchブロックからVerilogへの変換を行うXcratch拡張機能 : Convert Scratch Block to Verilog for Xcratch Extension
 
-This extension add extra-block "do it", that executes string in its input field as a sentence in Javascript and return the result.
+[Xcratch](https://xcratch.github.io/)
 
+この [Xcratch](https://xcratch.github.io/) 用拡張機能では，ScratchブロックからVelilogへの変換を行うことができます．
 
-## ✨ What You Can Do With This Extension
+[こちら](https://xcratch.github.io/editor/#https://HitsujiRere.github.io/scratch2verilog/projects/example.sb3)で実際に使ってみることができます．
+<iframe src="https://xcratch.github.io/editor/#https://HitsujiRere.github.io/scratch2verilog/projects/example.sb3" width="540px" height="460px"></iframe>
 
-Play [Example Project](https://xcratch.github.io/editor/#https://HitsujiRere.github.io/scratch2verilog/projects/example.sb3) to look at what you can do with "My Extension" extension. 
-<iframe src="https://xcratch.github.io/editor/player#https://HitsujiRere.github.io/scratch2verilog/projects/example.sb3" width="540px" height="460px"></iframe>
+## ✨ できること
 
+以下の画像の全10種類のブロックを用いてプログラムを記述し，Verilogへ変換することができます。
 
-## How to Use in Xcratch
+![作成したブロック](README/images/blocks.png)
 
-This extension can be used with other extension in [Xcratch](https://xcratch.github.io/). 
-1. Open [Xcratch Editor](https://xcratch.github.io/editor)
-2. Click 'Add Extension' button
-3. Select 'Extension Loader' extension
-4. Type the module URL in the input field 
+![ブロックの変換](README/images/conversion.png)
+
+## 🛠️ How to Use in Xcratch
+
+[Xcratch](https://xcratch.github.io/) 上で他の拡張機能と共に用いることができます．
+1. [Xcratch Editor](https://xcratch.github.io/editor) を開く
+1. 左下の「拡張機能を追加」ボタンをクリック
+1. 「拡張機能を読み込む」を選択する
+1. 入力フォームに以下のURLを入力する
 ```
 https://HitsujiRere.github.io/scratch2verilog/dist/myExtension.mjs
 ```
-
-## Development
-
-### Register on the local Xcratch
-
-Run register script to install this extension on the local Xcratch for testing.
-
-```sh
-npm run register
-```
-
-### Bundle into a Module
-
-Run build script to bundle this extension into a module file which could be loaded on Xcratch.
-
-```sh
-npm run build
-```
-
-## 🏠 Home Page
-
-Open this page from [https://HitsujiRere.github.io/scratch2verilog/](https://HitsujiRere.github.io/scratch2verilog/)
-
-
-## 🤝 Contributing
-
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/HitsujiRere/scratch2verilog/issues). 
