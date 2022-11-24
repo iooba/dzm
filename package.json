@@ -1,6 +1,6 @@
 {
-  "name": "xcx-my-extension",
-  "version": "0.0.0",
+  "name": "scratch2verilog",
+  "version": "1.0.0",
   "scripts": {
     "register": "npx xcratch-register --id=myExtension --gui=../scratch-gui --block=./src/vm/extensions/block --entry=./src/gui/lib/libraries/extensions/entry --core --link --use=extension-support util",
     "build": "npx xcratch-build --module=myExtension --gui=../scratch-gui --block=./src/vm/extensions/block --entry=./src/gui/lib/libraries/extensions/entry",

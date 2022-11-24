@@ -46,7 +46,7 @@ var entry = {
 
   extensionId: 'myExtension',
   extensionURL:
-    'https://HitsujiRere.github.io/xcx-my-extension/dist/myExtension.mjs',
+    'https://HitsujiRere.github.io/scratch2verilog/dist/myExtension.mjs',
   collaborator: 'HitsujiRere',
   iconURL: img$2,
   insetIconURL: img$1,
@@ -63,7 +63,7 @@ var entry = {
   disabled: false,
   bluetoothRequired: false,
   internetConnectionRequired: false,
-  helpLink: 'https://HitsujiRere.github.io/xcx-my-extension/',
+  helpLink: 'https://HitsujiRere.github.io/scratch2verilog/',
   setFormatMessage: function setFormatMessage(formatter) {
     formatMessage$1 = formatter;
   },
@@ -1211,7 +1211,7 @@ var EXTENSION_ID = 'myExtension';
  */
 
 var extensionURL =
-  'https://HitsujiRere.github.io/xcx-my-extension/dist/myExtension.mjs';
+  'https://HitsujiRere.github.io/scratch2verilog/dist/myExtension.mjs';
 /**
  * Scratch 3.0 blocks for example of Xcratch.
  */

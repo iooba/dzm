@@ -23,7 +23,7 @@ const entry = {
         });
     },
     extensionId: 'myExtension',
-    extensionURL: 'https://HitsujiRere.github.io/xcx-my-extension/dist/myExtension.mjs',
+    extensionURL: 'https://HitsujiRere.github.io/scratch2verilog/dist/myExtension.mjs',
     collaborator: 'HitsujiRere',
     iconURL: iconURL,
     insetIconURL: insetIconURL,
@@ -38,7 +38,7 @@ const entry = {
     disabled: false,
     bluetoothRequired: false,
     internetConnectionRequired: false,
-    helpLink: 'https://HitsujiRere.github.io/xcx-my-extension/',
+    helpLink: 'https://HitsujiRere.github.io/scratch2verilog/',
     setFormatMessage: formatter => {
         formatMessage = formatter;
     },

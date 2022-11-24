@@ -35,7 +35,7 @@ const EXTENSION_ID = 'myExtension';
  * @type {string}
  */
 let extensionURL =
-  'https://HitsujiRere.github.io/xcx-my-extension/dist/myExtension.mjs';
+  'https://HitsujiRere.github.io/scratch2verilog/dist/myExtension.mjs';
 
 /**
  * Scratch 3.0 blocks for example of Xcratch.
