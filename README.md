@@ -1,11 +1,9 @@
 # ScratchブロックからVerilogへの変換を行うXcratch拡張機能 : Convert Scratch Block to Verilog for Xcratch Extension
 
-[Xcratch](https://xcratch.github.io/)
-
 この [Xcratch](https://xcratch.github.io/) 用拡張機能では，ScratchブロックからVelilogへの変換を行うことができます．
 
 [こちら](https://xcratch.github.io/editor/#https://HitsujiRere.github.io/scratch2verilog/projects/example.sb3)で実際に使ってみることができます．
-<iframe src="https://xcratch.github.io/editor/#https://HitsujiRere.github.io/scratch2verilog/projects/example.sb3" width="540px" height="460px"></iframe>
+<iframe src="https://xcratch.github.io/editor/#https://HitsujiRere.github.io/scratch2verilog/projects/example.sb3"></iframe>
 
 ## ✨ できること
 
