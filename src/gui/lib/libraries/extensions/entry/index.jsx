@@ -18,7 +18,7 @@ const entry = {
     get name () {
         return formatMessage({
             id: 'myExtension.entry.name',
-            default: 'My Extension',
+            default: 'Scratch to Verilog',
             description: 'name of the extension'
         });
     },

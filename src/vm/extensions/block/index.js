@@ -47,7 +47,7 @@ class ExtensionBlocks {
   static get EXTENSION_NAME() {
     return formatMessage({
       id: 'myExtension.name',
-      default: 'My Extension',
+      default: 'Scratch to Verilog',
       description: 'name of the extension',
     });
   }
@@ -77,7 +77,7 @@ class ExtensionBlocks {
   }
 
   /**
-   * Construct a set of blocks for My Extension.
+   * Construct a set of blocks for Scratch to Verilog.
    * @param {Runtime} runtime - the Scratch 3.0 runtime.
    */
   constructor(runtime) {

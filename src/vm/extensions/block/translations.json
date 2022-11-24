@@ -1,14 +1,11 @@
 {
   "en": {
-    "myExtension.name": "My Extension",
-    "myExtension.doIt": "do it [SCRIPT]"
+    "myExtension.name": "Scratch to Verilog",
   },
   "ja": {
-    "myExtension.name": "My Extension",
-    "myExtension.doIt": "[SCRIPT] を実行する"
+    "myExtension.name": "Scratch to Verilog",
   },
   "ja-Hira": {
-    "myExtension.name": "My Extension",
-    "myExtension.doIt": "[SCRIPT] をじっこうする"
+    "myExtension.name": "Scratch to Verilog",
   }
 }
