@@ -2,8 +2,8 @@
   "name": "scratch2verilog",
   "version": "1.0.0",
   "scripts": {
-    "register": "npx xcratch-register --id=myExtension --gui=../scratch-gui --block=./src/vm/extensions/block --entry=./src/gui/lib/libraries/extensions/entry --core --link --use=extension-support util",
-    "build": "npx xcratch-build --module=myExtension --gui=../scratch-gui --block=./src/vm/extensions/block --entry=./src/gui/lib/libraries/extensions/entry",
+    "register": "npx xcratch-register --id=scratch2verilog --gui=../scratch-gui --block=./src/vm/extensions/block --entry=./src/gui/lib/libraries/extensions/entry --core --link --use=extension-support util",
+    "build": "npx xcratch-build --module=scratch2verilog --gui=../scratch-gui --block=./src/vm/extensions/block --entry=./src/gui/lib/libraries/extensions/entry",
     "peg-build": "peggy src/vm/extensions/block/analyzer.pegjs",
     "dev": "npm-watch"
   },

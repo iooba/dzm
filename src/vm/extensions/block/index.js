@@ -1,10 +1,10 @@
-import BlockType from '../../extension-support/block-type';
-import ArgumentType from '../../extension-support/argument-type';
-import translations from './translations.json';
-import blockIcon from './block-icon.png';
+import BlockType from "../../extension-support/block-type";
+import ArgumentType from "../../extension-support/argument-type";
+import translations from "./translations.json";
+import blockIcon from "./block-icon.png";
 
-import * as analyzer from './analyzer';
-import { Parser } from './parser';
+import * as analyzer from "./analyzer";
+import { Parser } from "./parser";
 
 /**
  * Formatter which is used for translation.
@@ -27,7 +27,7 @@ const setupTranslations = () => {
   }
 };
 
-const EXTENSION_ID = 'myExtension';
+const EXTENSION_ID = "scratch2verilog";
 
 /**
  * URL to get this extension as a module.
@@ -35,7 +35,7 @@ const EXTENSION_ID = 'myExtension';
  * @type {string}
  */
 let extensionURL =
-  'https://HitsujiRere.github.io/scratch2verilog/dist/myExtension.mjs';
+  "https://HitsujiRere.github.io/scratch2verilog/dist/scratch2verilog.mjs";
 
 /**
  * Scratch 3.0 blocks for example of Xcratch.
@@ -46,9 +46,9 @@ class ExtensionBlocks {
    */
   static get EXTENSION_NAME() {
     return formatMessage({
-      id: 'myExtension.name',
-      default: 'Scratch to Verilog',
-      description: 'name of the extension',
+      id: "scratch2verilog.name",
+      default: "Scratch to Verilog",
+      description: "name of the extension",
     });
   }
 
@@ -97,7 +97,7 @@ class ExtensionBlocks {
     const value = analyzer.parse(args.value);
     console.log(value);
 
-    console.log(JSON.stringify(value, null, '  '));
+    console.log(JSON.stringify(value, null, "  "));
 
     const parser = new Parser();
     const program = parser.parse(value);
@@ -107,12 +107,12 @@ class ExtensionBlocks {
     return navigator.clipboard
       .writeText(program)
       .then(() => {
-        console.log('Copied to clipboard.');
-        return 'Copied to clipboard.';
+        console.log("Copied to clipboard.");
+        return "Copied to clipboard.";
       })
       .catch(() => {
-        console.log('Copy to clipboard failed.');
-        return 'Copy to clipboard failed.';
+        console.log("Copy to clipboard failed.");
+        return "Copy to clipboard failed.";
       });
   }
 
@@ -165,204 +165,204 @@ class ExtensionBlocks {
       showStatusButton: false,
       blocks: [
         {
-          opcode: 'Run FPGA',
+          opcode: "Run FPGA",
           blockType: BlockType.COMMAND,
           blockAllThreads: false,
           text: formatMessage({
-            id: 'myExtension.RunFPGA',
-            default: '[value] をVerilogに変換する',
-            description: 'Run on FPGA',
+            id: "scratch2verilog.RunFPGA",
+            default: "[value] をVerilogに変換する",
+            description: "Run on FPGA",
           }),
-          func: 'run_fpga',
+          func: "run_fpga",
           arguments: {
             value: {
               type: ArgumentType.STRING,
-              defaultValue: '[program]',
+              defaultValue: "[program]",
             },
           },
         },
         {
-          opcode: 'Assign',
+          opcode: "Assign",
           blockType: BlockType.REPORTER,
           blockAllThreads: false,
           text: formatMessage({
-            id: 'myExtension.Assign',
-            default: '[var] を [expression] にする',
-            description: 'Assign',
+            id: "scratch2verilog.Assign",
+            default: "[var] を [expression] にする",
+            description: "Assign",
           }),
-          func: 'assign',
+          func: "assign",
           arguments: {
             var: {
               type: ArgumentType.STRING,
-              defaultValue: 'LED0',
+              defaultValue: "LED0",
             },
             expression: {
               type: ArgumentType.STRING,
-              defaultValue: '0',
+              defaultValue: "0",
             },
           },
         },
         {
-          opcode: 'Blink1s',
+          opcode: "Blink1s",
           blockType: BlockType.REPORTER,
           blockAllThreads: false,
           text: formatMessage({
-            id: 'myExtension.Blink1s',
-            default: '[sec] 秒ごとにON/OFF',
-            description: 'Blink',
+            id: "scratch2verilog.Blink1s",
+            default: "[sec] 秒ごとにON/OFF",
+            description: "Blink",
           }),
-          func: 'blink1s',
+          func: "blink1s",
           arguments: {
             sec: {
               type: ArgumentType.NUMBER,
-              defaultValue: '1',
+              defaultValue: "1",
             },
           },
         },
         {
-          opcode: 'Add',
+          opcode: "Add",
           blockType: BlockType.REPORTER,
           blockAllThreads: false,
           text: formatMessage({
-            id: 'myExtension.Add',
-            default: '[x] + [y]',
-            description: 'x + y',
+            id: "scratch2verilog.Add",
+            default: "[x] + [y]",
+            description: "x + y",
           }),
-          func: 'add',
+          func: "add",
           arguments: {
             x: {
               type: ArgumentType.STRING,
-              defaultValue: '0',
+              defaultValue: "0",
             },
             y: {
               type: ArgumentType.STRING,
-              defaultValue: '0',
+              defaultValue: "0",
             },
           },
         },
         {
-          opcode: 'Sub',
+          opcode: "Sub",
           blockType: BlockType.REPORTER,
           blockAllThreads: false,
           text: formatMessage({
-            id: 'myExtension.Sub',
-            default: '[x] - [y]',
-            description: 'x - y',
+            id: "scratch2verilog.Sub",
+            default: "[x] - [y]",
+            description: "x - y",
           }),
-          func: 'sub',
+          func: "sub",
           arguments: {
             x: {
               type: ArgumentType.STRING,
-              defaultValue: '0',
+              defaultValue: "0",
             },
             y: {
               type: ArgumentType.STRING,
-              defaultValue: '0',
+              defaultValue: "0",
             },
           },
         },
         {
-          opcode: 'Multi',
+          opcode: "Multi",
           blockType: BlockType.REPORTER,
           blockAllThreads: false,
           text: formatMessage({
-            id: 'myExtension.Multi',
-            default: '[x] * [y]',
-            description: 'x * y',
+            id: "scratch2verilog.Multi",
+            default: "[x] * [y]",
+            description: "x * y",
           }),
-          func: 'multi',
+          func: "multi",
           arguments: {
             x: {
               type: ArgumentType.STRING,
-              defaultValue: '1',
+              defaultValue: "1",
             },
             y: {
               type: ArgumentType.STRING,
-              defaultValue: '1',
+              defaultValue: "1",
             },
           },
         },
         {
-          opcode: 'Div',
+          opcode: "Div",
           blockType: BlockType.REPORTER,
           blockAllThreads: false,
           text: formatMessage({
-            id: 'myExtension.Div',
-            default: '[x] / [y]',
-            description: 'x / y',
+            id: "scratch2verilog.Div",
+            default: "[x] / [y]",
+            description: "x / y",
           }),
-          func: 'div',
+          func: "div",
           arguments: {
             x: {
               type: ArgumentType.STRING,
-              defaultValue: '1',
+              defaultValue: "1",
             },
             y: {
               type: ArgumentType.STRING,
-              defaultValue: '1',
+              defaultValue: "1",
             },
           },
         },
         {
-          opcode: 'And',
+          opcode: "And",
           blockType: BlockType.REPORTER,
           blockAllThreads: false,
           text: formatMessage({
-            id: 'myExtension.And',
-            default: '[x] & [y]',
-            description: 'x & y',
+            id: "scratch2verilog.And",
+            default: "[x] & [y]",
+            description: "x & y",
           }),
-          func: 'and',
+          func: "and",
           arguments: {
             x: {
               type: ArgumentType.STRING,
-              defaultValue: '1',
+              defaultValue: "1",
             },
             y: {
               type: ArgumentType.STRING,
-              defaultValue: '1',
+              defaultValue: "1",
             },
           },
         },
         {
-          opcode: 'Or',
+          opcode: "Or",
           blockType: BlockType.REPORTER,
           blockAllThreads: false,
           text: formatMessage({
-            id: 'myExtension.Or',
-            default: '[x] | [y]',
-            description: 'x | y',
+            id: "scratch2verilog.Or",
+            default: "[x] | [y]",
+            description: "x | y",
           }),
-          func: 'or',
+          func: "or",
           arguments: {
             x: {
               type: ArgumentType.STRING,
-              defaultValue: '1',
+              defaultValue: "1",
             },
             y: {
               type: ArgumentType.STRING,
-              defaultValue: '1',
+              defaultValue: "1",
             },
           },
         },
         {
-          opcode: 'Xor',
+          opcode: "Xor",
           blockType: BlockType.REPORTER,
           blockAllThreads: false,
           text: formatMessage({
-            id: 'myExtension.Xor',
-            default: '[x] ^ [y]',
-            description: 'x ^ y',
+            id: "scratch2verilog.Xor",
+            default: "[x] ^ [y]",
+            description: "x ^ y",
           }),
-          func: 'xor',
+          func: "xor",
           arguments: {
             x: {
               type: ArgumentType.STRING,
-              defaultValue: '1',
+              defaultValue: "1",
             },
             y: {
               type: ArgumentType.STRING,
-              defaultValue: '1',
+              defaultValue: "1",
             },
           },
         },

@@ -1,11 +1,14 @@
 {
   "en": {
-    "myExtension.name": "Scratch to Verilog",
+    "scratch2verilog.entry.name": "Scratch to Verilog",
+    "scratch2verilog.entry.description": "Description of this extension"
   },
   "ja": {
-    "myExtension.name": "Scratch to Verilog",
+    "scratch2verilog.entry.name": "Scratch to Verilog",
+    "scratch2verilog.entry.description": "拡張機能の説明"
   },
   "ja-Hira": {
-    "myExtension.name": "Scratch to Verilog",
+    "scratch2verilog.entry.name": "Scratch to Verilog",
+    "scratch2verilog.entry.description": "かくちょうきのうのせつめい"
   }
 }
