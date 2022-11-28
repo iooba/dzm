@@ -187,7 +187,7 @@ class ExtensionBlocks {
           blockAllThreads: false,
           text: formatMessage({
             id: "scratch2verilog.Assign",
-            default: "[var] を [expression] にする",
+            default: "[var] を [expression] に繋げる",
             description: "Assign",
           }),
           func: "assign",
