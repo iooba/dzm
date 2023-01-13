@@ -54,6 +54,8 @@ endmodule`;
           return `(${args[0]}) | (${args[1]})`;
         case "xor":
           return `(${args[0]}) ^ (${args[1]})`;
+        case "ifelse":
+          return `(${args[0]}) ? (${args[1]}) : (${args[2]})`;
 
         case "blink":
           this.modules.add("Blink");
@@ -76,7 +78,11 @@ endmodule`;
       }
 
       // TODO: 自動生成
-      return `${name}${index}`;
+      if (index !== null) {
+        return `${name}${index}`;
+      } else {
+        return name;
+      }
     }
 
     if (obj.type === "number") {
@@ -112,9 +118,9 @@ module Blink (
       cnt <= cnt + 30'd1;
     end
   end
-  
+
   assign LED = led;
-    
+
 endmodule`.split("\n")
           );
           // varCodes.push(["wire blink1s;", "Blink1s Blink(CLK, blink1s);"]);

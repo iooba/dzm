@@ -152,6 +152,10 @@ class ExtensionBlocks {
     return `xor(${args.x}, ${args.y})`;
   }
 
+  ifelse(args) {
+    return `ifelse(${args.cond}, ${args.x}, ${args.y})`;
+  }
+
   /**
    * @returns {object} metadata for this extension and its blocks.
    */
@@ -363,6 +367,31 @@ class ExtensionBlocks {
             y: {
               type: ArgumentType.STRING,
               defaultValue: "1",
+            },
+          },
+        },
+        {
+          opcode: "IfElse",
+          blockType: BlockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.IfElse",
+            default: "[cond] なら [x] でないなら　[y]",
+            description: "cond ? x : y",
+          }),
+          func: "ifelse",
+          arguments: {
+            cond: {
+              type: ArgumentType.STRING,
+              defaultValue: "true",
+            },
+            x: {
+              type: ArgumentType.STRING,
+              defaultValue: "0",
+            },
+            y: {
+              type: ArgumentType.STRING,
+              defaultValue: "0",
             },
           },
         },

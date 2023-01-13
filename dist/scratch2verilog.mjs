@@ -73,13 +73,41 @@ function _classCallCheck(instance, Constructor) {
   }
 }
 
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  }, _typeof(obj);
+}
+
+function _toPrimitive(input, hint) {
+  if (_typeof(input) !== "object" || input === null) return input;
+  var prim = input[Symbol.toPrimitive];
+
+  if (prim !== undefined) {
+    var res = prim.call(input, hint || "default");
+    if (_typeof(res) !== "object") return res;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+
+  return (hint === "string" ? String : Number)(input);
+}
+
+function _toPropertyKey(arg) {
+  var key = _toPrimitive(arg, "string");
+  return _typeof(key) === "symbol" ? key : String(key);
+}
+
 function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
     var descriptor = props[i];
     descriptor.enumerable = descriptor.enumerable || false;
     descriptor.configurable = true;
     if ("value" in descriptor) descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
+    Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);
   }
 }
 
@@ -1003,6 +1031,9 @@ var Parser = /*#__PURE__*/function () {
           case "xor":
             return "(".concat(args[0], ") ^ (").concat(args[1], ")");
 
+          case "ifelse":
+            return "(".concat(args[0], ") ? (").concat(args[1], ") : (").concat(args[2], ")");
+
           case "blink":
             this.modules.add("Blink");
             var clock = args[0] * 125000000 - 1;
@@ -1027,7 +1058,11 @@ var Parser = /*#__PURE__*/function () {
         } // TODO: 自動生成
 
 
-        return "".concat(name).concat(index);
+        if (index !== null) {
+          return "".concat(name).concat(index);
+        } else {
+          return name;
+        }
       }
 
       if (obj.type === "number") {
@@ -1042,7 +1077,7 @@ var Parser = /*#__PURE__*/function () {
       this.modules.forEach(function (value) {
         switch (value) {
           case "Blink":
-            moduleCodes.push("\nmodule Blink (\n  input CLK,\n  output LED\n);\n\n  // default 1sec, max 10sec\n  parameter CNT_MAX = 31'd124999999;\n  reg [30:0] cnt = 31'd0;\n  reg led = 1'd0;\n\n  always @(posedge CLK) begin\n    if (cnt == CNT_MAX) begin\n      cnt <= 30'd0;\n      led <= ~led;\n    end\n    else begin\n      cnt <= cnt + 30'd1;\n    end\n  end\n  \n  assign LED = led;\n    \nendmodule".split("\n")); // varCodes.push(["wire blink1s;", "Blink1s Blink(CLK, blink1s);"]);
+            moduleCodes.push("\nmodule Blink (\n  input CLK,\n  output LED\n);\n\n  // default 1sec, max 10sec\n  parameter CNT_MAX = 31'd124999999;\n  reg [30:0] cnt = 31'd0;\n  reg led = 1'd0;\n\n  always @(posedge CLK) begin\n    if (cnt == CNT_MAX) begin\n      cnt <= 30'd0;\n      led <= ~led;\n    end\n    else begin\n      cnt <= cnt + 30'd1;\n    end\n  end\n\n  assign LED = led;\n\nendmodule".split("\n")); // varCodes.push(["wire blink1s;", "Blink1s Blink(CLK, blink1s);"]);
 
             break;
         }
@@ -1194,6 +1229,11 @@ var ExtensionBlocks = /*#__PURE__*/function () {
     key: "xor",
     value: function xor(args) {
       return "xor(".concat(args.x, ", ").concat(args.y, ")");
+    }
+  }, {
+    key: "ifelse",
+    value: function ifelse(args) {
+      return "ifelse(".concat(args.cond, ", ").concat(args.x, ", ").concat(args.y, ")");
     }
     /**
      * @returns {object} metadata for this extension and its blocks.
@@ -1399,6 +1439,30 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             y: {
               type: argumentType.STRING,
               defaultValue: "1"
+            }
+          }
+        }, {
+          opcode: "IfElse",
+          blockType: blockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.IfElse",
+            default: "[cond] なら [x] でないなら　[y]",
+            description: "cond ? x : y"
+          }),
+          func: "ifelse",
+          arguments: {
+            cond: {
+              type: argumentType.STRING,
+              defaultValue: "true"
+            },
+            x: {
+              type: argumentType.STRING,
+              defaultValue: "0"
+            },
+            y: {
+              type: argumentType.STRING,
+              defaultValue: "0"
             }
           }
         }],
