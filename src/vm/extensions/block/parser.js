@@ -54,6 +54,14 @@ endmodule`;
           return `(${args[0]}) | (${args[1]})`;
         case "xor":
           return `(${args[0]}) ^ (${args[1]})`;
+        case "eq":
+          return `(${args[0]}) == (${args[1]})`;
+        case "neq":
+          return `(${args[0]}) != (${args[1]})`;
+        case "lt":
+          return `(${args[0]}) < (${args[1]})`;
+        case "lte":
+          return `(${args[0]}) <= (${args[1]})`;
         case "ifelse":
           return `(${args[0]}) ? (${args[1]}) : (${args[2]})`;
 

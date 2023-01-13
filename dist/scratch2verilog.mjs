@@ -1031,6 +1031,18 @@ var Parser = /*#__PURE__*/function () {
           case "xor":
             return "(".concat(args[0], ") ^ (").concat(args[1], ")");
 
+          case "eq":
+            return "(".concat(args[0], ") == (").concat(args[1], ")");
+
+          case "neq":
+            return "(".concat(args[0], ") != (").concat(args[1], ")");
+
+          case "lt":
+            return "(".concat(args[0], ") < (").concat(args[1], ")");
+
+          case "lte":
+            return "(".concat(args[0], ") <= (").concat(args[1], ")");
+
           case "ifelse":
             return "(".concat(args[0], ") ? (").concat(args[1], ") : (").concat(args[2], ")");
 
@@ -1229,6 +1241,26 @@ var ExtensionBlocks = /*#__PURE__*/function () {
     key: "xor",
     value: function xor(args) {
       return "xor(".concat(args.x, ", ").concat(args.y, ")");
+    }
+  }, {
+    key: "eq",
+    value: function eq(args) {
+      return "eq(".concat(args.x, ", ").concat(args.y, ")");
+    }
+  }, {
+    key: "neq",
+    value: function neq(args) {
+      return "neq(".concat(args.x, ", ").concat(args.y, ")");
+    }
+  }, {
+    key: "lt",
+    value: function lt(args) {
+      return "lt(".concat(args.x, ", ").concat(args.y, ")");
+    }
+  }, {
+    key: "lte",
+    value: function lte(args) {
+      return "lte(".concat(args.x, ", ").concat(args.y, ")");
     }
   }, {
     key: "ifelse",
@@ -1431,6 +1463,86 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             description: "x ^ y"
           }),
           func: "xor",
+          arguments: {
+            x: {
+              type: argumentType.STRING,
+              defaultValue: "1"
+            },
+            y: {
+              type: argumentType.STRING,
+              defaultValue: "1"
+            }
+          }
+        }, {
+          opcode: "Eq",
+          blockType: blockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.Eq",
+            default: "[x] == [y]",
+            description: "x == y"
+          }),
+          func: "eq",
+          arguments: {
+            x: {
+              type: argumentType.STRING,
+              defaultValue: "1"
+            },
+            y: {
+              type: argumentType.STRING,
+              defaultValue: "1"
+            }
+          }
+        }, {
+          opcode: "Neq",
+          blockType: blockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.Neq",
+            default: "[x] != [y]",
+            description: "x != y"
+          }),
+          func: "neq",
+          arguments: {
+            x: {
+              type: argumentType.STRING,
+              defaultValue: "1"
+            },
+            y: {
+              type: argumentType.STRING,
+              defaultValue: "1"
+            }
+          }
+        }, {
+          opcode: "Lt",
+          blockType: blockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.Lt",
+            default: "[x] < [y]",
+            description: "x < y"
+          }),
+          func: "lt",
+          arguments: {
+            x: {
+              type: argumentType.STRING,
+              defaultValue: "1"
+            },
+            y: {
+              type: argumentType.STRING,
+              defaultValue: "1"
+            }
+          }
+        }, {
+          opcode: "Lte",
+          blockType: blockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.Lte",
+            default: "[x] <= [y]",
+            description: "x <= y"
+          }),
+          func: "lte",
           arguments: {
             x: {
               type: argumentType.STRING,

@@ -152,6 +152,22 @@ class ExtensionBlocks {
     return `xor(${args.x}, ${args.y})`;
   }
 
+  eq(args) {
+    return `eq(${args.x}, ${args.y})`;
+  }
+
+  neq(args) {
+    return `neq(${args.x}, ${args.y})`;
+  }
+
+  lt(args) {
+    return `lt(${args.x}, ${args.y})`;
+  }
+
+  lte(args) {
+    return `lte(${args.x}, ${args.y})`;
+  }
+
   ifelse(args) {
     return `ifelse(${args.cond}, ${args.x}, ${args.y})`;
   }
@@ -359,6 +375,90 @@ class ExtensionBlocks {
             description: "x ^ y",
           }),
           func: "xor",
+          arguments: {
+            x: {
+              type: ArgumentType.STRING,
+              defaultValue: "1",
+            },
+            y: {
+              type: ArgumentType.STRING,
+              defaultValue: "1",
+            },
+          },
+        },
+        {
+          opcode: "Eq",
+          blockType: BlockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.Eq",
+            default: "[x] == [y]",
+            description: "x == y",
+          }),
+          func: "eq",
+          arguments: {
+            x: {
+              type: ArgumentType.STRING,
+              defaultValue: "1",
+            },
+            y: {
+              type: ArgumentType.STRING,
+              defaultValue: "1",
+            },
+          },
+        },
+        {
+          opcode: "Neq",
+          blockType: BlockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.Neq",
+            default: "[x] != [y]",
+            description: "x != y",
+          }),
+          func: "neq",
+          arguments: {
+            x: {
+              type: ArgumentType.STRING,
+              defaultValue: "1",
+            },
+            y: {
+              type: ArgumentType.STRING,
+              defaultValue: "1",
+            },
+          },
+        },
+        {
+          opcode: "Lt",
+          blockType: BlockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.Lt",
+            default: "[x] < [y]",
+            description: "x < y",
+          }),
+          func: "lt",
+          arguments: {
+            x: {
+              type: ArgumentType.STRING,
+              defaultValue: "1",
+            },
+            y: {
+              type: ArgumentType.STRING,
+              defaultValue: "1",
+            },
+          },
+        },
+        {
+          opcode: "Lte",
+          blockType: BlockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.Lte",
+            default: "[x] <= [y]",
+            description: "x <= y",
+          }),
+          func: "lte",
           arguments: {
             x: {
               type: ArgumentType.STRING,
