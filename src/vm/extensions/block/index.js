@@ -93,6 +93,10 @@ class ExtensionBlocks {
     }
   }
 
+  set_module_name(args) {
+    this.moduleName = args.name;
+  }
+
   run_fpga(args) {
     const value = analyzer.parse(args.value);
     console.log(value);
@@ -100,7 +104,10 @@ class ExtensionBlocks {
     console.log(JSON.stringify(value, null, "  "));
 
     const parser = new Parser();
-    const program = parser.parse(value);
+    const program = parser.parse({
+      moduleName: this.moduleName ?? "moduleName",
+      program: value,
+    });
 
     console.log(program);
 
@@ -184,6 +191,23 @@ class ExtensionBlocks {
       blockIconURI: blockIcon,
       showStatusButton: false,
       blocks: [
+        {
+          opcode: "Set Module Name",
+          blockType: BlockType.COMMAND,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.SetModuleName",
+            default: "モジュール名を [name] に変更する",
+            description: "Set module name",
+          }),
+          func: "set_module_name",
+          arguments: {
+            name: {
+              type: ArgumentType.STRING,
+              defaultValue: "moduleName",
+            },
+          },
+        },
         {
           opcode: "Run FPGA",
           blockType: BlockType.COMMAND,

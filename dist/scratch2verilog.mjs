@@ -981,9 +981,15 @@ var Parser = /*#__PURE__*/function () {
 
   _createClass(Parser, [{
     key: "parse",
-    value: function parse(program) {
+    value: function parse(_ref) {
       var _this = this;
 
+      var moduleName = _ref.moduleName,
+          program = _ref.program;
+      console.log({
+        moduleName: moduleName,
+        program: program
+      });
       var codes = program.map(function (line) {
         return _this._parse_obj(line);
       });
@@ -994,7 +1000,7 @@ var Parser = /*#__PURE__*/function () {
 
       var varCodes = this.__declare_vars();
 
-      return "\n`timescale 1ns / 1ps\n\n".concat(moduleCodes.module.join("\n"), "\n\nmodule moduleName (\n  input CLK,\n  input [3:0] BTN,\n  input [3:0] SW,\n  output [3:0] LED\n);\n\n  ").concat(moduleCodes.var.join("\n  "), "\n\n  ").concat(varCodes.join("\n  "), "\n\n  ").concat(codes.join("\n  "), "\n\nendmodule");
+      return "\n`timescale 1ns / 1ps\n\n".concat(moduleCodes.module.join("\n"), "\n\nmodule ").concat(moduleName, " (\n  input CLK,\n  input [3:0] BTN,\n  input [3:0] SW,\n  output [3:0] LED\n);\n\n  ").concat(moduleCodes.var.join("\n  "), "\n\n  ").concat(varCodes.join("\n  "), "\n\n  ").concat(codes.join("\n  "), "\n\nendmodule");
     }
   }, {
     key: "_parse_obj",
@@ -1181,13 +1187,23 @@ var ExtensionBlocks = /*#__PURE__*/function () {
   }
 
   _createClass(ExtensionBlocks, [{
+    key: "set_module_name",
+    value: function set_module_name(args) {
+      this.moduleName = args.name;
+    }
+  }, {
     key: "run_fpga",
     value: function run_fpga(args) {
+      var _this$moduleName;
+
       var value = analyzer.parse(args.value);
       console.log(value);
       console.log(JSON.stringify(value, null, "  "));
       var parser = new Parser();
-      var program = parser.parse(value);
+      var program = parser.parse({
+        moduleName: (_this$moduleName = this.moduleName) !== null && _this$moduleName !== void 0 ? _this$moduleName : "moduleName",
+        program: value
+      });
       console.log(program);
       return navigator.clipboard.writeText(program).then(function () {
         console.log("Copied to clipboard.");
@@ -1282,6 +1298,22 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         blockIconURI: img,
         showStatusButton: false,
         blocks: [{
+          opcode: "Set Module Name",
+          blockType: blockType.COMMAND,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.SetModuleName",
+            default: "モジュール名を [name] に変更する",
+            description: "Set module name"
+          }),
+          func: "set_module_name",
+          arguments: {
+            name: {
+              type: argumentType.STRING,
+              defaultValue: "moduleName"
+            }
+          }
+        }, {
           opcode: "Run FPGA",
           blockType: blockType.COMMAND,
           blockAllThreads: false,

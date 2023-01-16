@@ -4,7 +4,9 @@ export class Parser {
     this.modules = new Set();
   }
 
-  parse(program) {
+  parse({ moduleName, program }) {
+    console.log({ moduleName, program });
+
     const codes = program.map((line) => this._parse_obj(line));
 
     const moduleCodes = this.__declare_modules();
@@ -18,7 +20,7 @@ export class Parser {
 
 ${moduleCodes.module.join("\n")}
 
-module moduleName (
+module ${moduleName} (
   input CLK,
   input [3:0] BTN,
   input [3:0] SW,
