@@ -971,17 +971,17 @@ var analyzer = {
   parse: peg$parse
 };
 
-var Parser = /*#__PURE__*/function () {
-  function Parser() {
-    _classCallCheck(this, Parser);
+var Emitter = /*#__PURE__*/function () {
+  function Emitter() {
+    _classCallCheck(this, Emitter);
 
     this.vars = new Set();
     this.modules = new Set();
   }
 
-  _createClass(Parser, [{
-    key: "parse",
-    value: function parse(_ref) {
+  _createClass(Emitter, [{
+    key: "emit",
+    value: function emit(_ref) {
       var _this = this;
 
       var moduleName = _ref.moduleName,
@@ -991,7 +991,7 @@ var Parser = /*#__PURE__*/function () {
         program: program
       });
       var codes = program.map(function (line) {
-        return _this._parse_obj(line);
+        return _this._emit_obj(line);
       });
 
       var moduleCodes = this.__declare_modules();
@@ -1003,13 +1003,13 @@ var Parser = /*#__PURE__*/function () {
       return "\n`timescale 1ns / 1ps\n\n".concat(moduleCodes.module.join("\n"), "\n\nmodule ").concat(moduleName, " (\n  input CLK,\n  input [3:0] BTN,\n  input [3:0] SW,\n  output [3:0] LED\n);\n\n  ").concat(moduleCodes.var.join("\n  "), "\n\n  ").concat(varCodes.join("\n  "), "\n\n  ").concat(codes.join("\n  "), "\n\nendmodule");
     }
   }, {
-    key: "_parse_obj",
-    value: function _parse_obj(obj) {
+    key: "_emit_obj",
+    value: function _emit_obj(obj) {
       var _this2 = this;
 
       if (obj.type === "function") {
         var args = obj.args.map(function (arg) {
-          return _this2._parse_obj(arg);
+          return _this2._emit_obj(arg);
         });
 
         switch (obj.name) {
@@ -1128,7 +1128,7 @@ var Parser = /*#__PURE__*/function () {
     }
   }]);
 
-  return Parser;
+  return Emitter;
 }();
 
 /**
@@ -1199,8 +1199,8 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       var value = analyzer.parse(args.value);
       console.log(value);
       console.log(JSON.stringify(value, null, "  "));
-      var parser = new Parser();
-      var program = parser.parse({
+      var emitter = new Emitter();
+      var program = emitter.emit({
         moduleName: (_this$moduleName = this.moduleName) !== null && _this$moduleName !== void 0 ? _this$moduleName : "moduleName",
         program: value
       });

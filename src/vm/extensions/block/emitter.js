@@ -1,13 +1,13 @@
-export class Parser {
+export class Emitter {
   constructor() {
     this.vars = new Set();
     this.modules = new Set();
   }
 
-  parse({ moduleName, program }) {
+  emit({ moduleName, program }) {
     console.log({ moduleName, program });
 
-    const codes = program.map((line) => this._parse_obj(line));
+    const codes = program.map((line) => this._emit_obj(line));
 
     const moduleCodes = this.__declare_modules();
 
@@ -36,9 +36,9 @@ module ${moduleName} (
 endmodule`;
   }
 
-  _parse_obj(obj) {
+  _emit_obj(obj) {
     if (obj.type === "function") {
-      const args = obj.args.map((arg) => this._parse_obj(arg));
+      const args = obj.args.map((arg) => this._emit_obj(arg));
       switch (obj.name) {
         case "assign":
           return `assign ${args[0]} = ${args[1]};`;

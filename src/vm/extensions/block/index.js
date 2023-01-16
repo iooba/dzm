@@ -4,7 +4,7 @@ import translations from "./translations.json";
 import blockIcon from "./block-icon.png";
 
 import * as analyzer from "./analyzer";
-import { Parser } from "./parser";
+import { Emitter } from "./emitter";
 
 /**
  * Formatter which is used for translation.
@@ -103,8 +103,8 @@ class ExtensionBlocks {
 
     console.log(JSON.stringify(value, null, "  "));
 
-    const parser = new Parser();
-    const program = parser.parse({
+    const emitter = new Emitter();
+    const program = emitter.emit({
       moduleName: this.moduleName ?? "moduleName",
       program: value,
     });
