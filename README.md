@@ -4,7 +4,7 @@
 
 [こちら](https://xcratch.github.io/editor/#https://HitsujiRere.github.io/scratch2verilog/projects/example.sb3)で実際に使ってみることができます．
 
-<iframe src="https://xcratch.github.io/editor/#https://HitsujiRere.github.io/scratch2verilog/projects/example.sb3"></iframe>
+<iframe src="https://xcratch.github.io/editor/#https://HitsujiRere.github.io/scratch2verilog/projects/example.sb3" style="width:100%; aspect-ratio:16/9;"></iframe>
 
 ## ✨ できること
 
