@@ -1,7 +1,5 @@
 Expression
-  = head:(Function / Ident / Number) 
-    tail:(Function / Ident / Number)*
-    { return [head].concat(tail) }
+  = (Function / Ident / Number)+
 
 Function "function"
   = name:String "(" _
