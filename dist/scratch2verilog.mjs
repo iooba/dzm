@@ -411,15 +411,11 @@ function peg$parse(input, options) {
   var peg$e8 = peg$otherExpectation("whitespace");
   var peg$e9 = peg$classExpectation([" ", "\t", "\f", "\r", "\n", "\v"], false, false);
 
-  var peg$f0 = function peg$f0(head, tail) {
+  var peg$f0 = function peg$f0(name, head, tail) {
     return [head].concat(tail);
   };
 
-  var peg$f1 = function peg$f1(name, head, tail) {
-    return [head].concat(tail);
-  };
-
-  var peg$f2 = function peg$f2(name, args) {
+  var peg$f1 = function peg$f1(name, args) {
     return {
       type: "function",
       name: name,
@@ -427,7 +423,7 @@ function peg$parse(input, options) {
     };
   };
 
-  var peg$f3 = function peg$f3(name, index) {
+  var peg$f2 = function peg$f2(name, index) {
     return {
       type: "ident",
       name: name,
@@ -435,18 +431,18 @@ function peg$parse(input, options) {
     };
   };
 
-  var peg$f4 = function peg$f4(number) {
+  var peg$f3 = function peg$f3(number) {
     return {
       type: "number",
       number: number
     };
   };
 
-  var peg$f5 = function peg$f5(text) {
+  var peg$f4 = function peg$f4(text) {
     return text.join("");
   };
 
-  var peg$f6 = function peg$f6() {
+  var peg$f5 = function peg$f5() {
     return parseInt(text(), 10);
   };
 
@@ -574,8 +570,8 @@ function peg$parse(input, options) {
   }
 
   function peg$parseExpression() {
-    var s0, s1, s2, s3;
-    s0 = peg$currPos;
+    var s0, s1;
+    s0 = [];
     s1 = peg$parseFunction();
 
     if (s1 === peg$FAILED) {
@@ -587,34 +583,19 @@ function peg$parse(input, options) {
     }
 
     if (s1 !== peg$FAILED) {
-      s2 = [];
-      s3 = peg$parseFunction();
+      while (s1 !== peg$FAILED) {
+        s0.push(s1);
+        s1 = peg$parseFunction();
 
-      if (s3 === peg$FAILED) {
-        s3 = peg$parseIdent();
+        if (s1 === peg$FAILED) {
+          s1 = peg$parseIdent();
 
-        if (s3 === peg$FAILED) {
-          s3 = peg$parseNumber();
-        }
-      }
-
-      while (s3 !== peg$FAILED) {
-        s2.push(s3);
-        s3 = peg$parseFunction();
-
-        if (s3 === peg$FAILED) {
-          s3 = peg$parseIdent();
-
-          if (s3 === peg$FAILED) {
-            s3 = peg$parseNumber();
+          if (s1 === peg$FAILED) {
+            s1 = peg$parseNumber();
           }
         }
       }
-
-      peg$savedPos = s0;
-      s0 = peg$f0(s1, s2);
     } else {
-      peg$currPos = s0;
       s0 = peg$FAILED;
     }
 
@@ -708,7 +689,7 @@ function peg$parse(input, options) {
           }
 
           peg$savedPos = s4;
-          s4 = peg$f1(s1, s5, s6);
+          s4 = peg$f0(s1, s5, s6);
         } else {
           peg$currPos = s4;
           s4 = peg$FAILED;
@@ -733,7 +714,7 @@ function peg$parse(input, options) {
 
         if (s6 !== peg$FAILED) {
           peg$savedPos = s0;
-          s0 = peg$f2(s1, s4);
+          s0 = peg$f1(s1, s4);
         } else {
           peg$currPos = s0;
           s0 = peg$FAILED;
@@ -774,7 +755,7 @@ function peg$parse(input, options) {
       }
 
       peg$savedPos = s0;
-      s0 = peg$f3(s1, s2);
+      s0 = peg$f2(s1, s2);
     } else {
       peg$currPos = s0;
       s0 = peg$FAILED;
@@ -801,7 +782,7 @@ function peg$parse(input, options) {
 
     if (s1 !== peg$FAILED) {
       peg$savedPos = s0;
-      s1 = peg$f4(s1);
+      s1 = peg$f3(s1);
     }
 
     s0 = s1;
@@ -856,7 +837,7 @@ function peg$parse(input, options) {
 
     if (s2 !== peg$FAILED) {
       peg$savedPos = s0;
-      s0 = peg$f5(s2);
+      s0 = peg$f4(s2);
     } else {
       peg$currPos = s0;
       s0 = peg$FAILED;
@@ -903,7 +884,7 @@ function peg$parse(input, options) {
 
     if (s2 !== peg$FAILED) {
       peg$savedPos = s0;
-      s0 = peg$f6();
+      s0 = peg$f5();
     } else {
       peg$currPos = s0;
       s0 = peg$FAILED;
@@ -966,7 +947,7 @@ function peg$parse(input, options) {
   }
 }
 
-var analyzer = {
+var parser = {
   SyntaxError: peg$SyntaxError,
   parse: peg$parse
 };
@@ -1196,7 +1177,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
     value: function run_fpga(args) {
       var _this$moduleName;
 
-      var value = analyzer.parse(args.value);
+      var value = parser.parse(args.value);
       console.log(value);
       console.log(JSON.stringify(value, null, "  "));
       var emitter = new Emitter();

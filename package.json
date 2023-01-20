@@ -4,7 +4,7 @@
   "scripts": {
     "register": "npx xcratch-register --id=scratch2verilog --gui=../scratch-gui --block=./src/vm/extensions/block --entry=./src/gui/lib/libraries/extensions/entry --core --link --use=extension-support util",
     "build": "npx xcratch-build --module=scratch2verilog --gui=../scratch-gui --block=./src/vm/extensions/block --entry=./src/gui/lib/libraries/extensions/entry",
-    "peg-build": "peggy src/vm/extensions/block/analyzer.pegjs",
+    "peg-build": "peggy src/vm/extensions/block/parser.pegjs",
     "dev": "npm-watch"
   },
   "devDependencies": {

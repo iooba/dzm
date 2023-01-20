@@ -3,7 +3,7 @@ import ArgumentType from "../../extension-support/argument-type";
 import translations from "./translations.json";
 import blockIcon from "./block-icon.png";
 
-import * as analyzer from "./analyzer";
+import * as parser from "./parser";
 import { Emitter } from "./emitter";
 
 /**
@@ -98,7 +98,7 @@ class ExtensionBlocks {
   }
 
   run_fpga(args) {
-    const value = analyzer.parse(args.value);
+    const value = parser.parse(args.value);
     console.log(value);
 
     console.log(JSON.stringify(value, null, "  "));
