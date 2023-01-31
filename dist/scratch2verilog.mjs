@@ -397,7 +397,7 @@ function peg$parse(input, options) {
   var peg$c0 = "(";
   var peg$c1 = ",";
   var peg$c2 = ")";
-  var peg$r0 = /^[a-zA-Z]/;
+  var peg$r0 = /^[a-zA-Z0-9]/;
   var peg$r1 = /^[0-9]/;
   var peg$r2 = /^[ \t\f\r\n\v]/;
   var peg$e0 = peg$otherExpectation("function");
@@ -406,7 +406,7 @@ function peg$parse(input, options) {
   var peg$e3 = peg$literalExpectation(")", false);
   var peg$e4 = peg$otherExpectation("ident");
   var peg$e5 = peg$otherExpectation("number");
-  var peg$e6 = peg$classExpectation([["a", "z"], ["A", "Z"]], false, false);
+  var peg$e6 = peg$classExpectation([["a", "z"], ["A", "Z"], ["0", "9"]], false, false);
   var peg$e7 = peg$classExpectation([["0", "9"]], false, false);
   var peg$e8 = peg$otherExpectation("whitespace");
   var peg$e9 = peg$classExpectation([" ", "\t", "\f", "\r", "\n", "\v"], false, false);
@@ -981,7 +981,7 @@ var Emitter = /*#__PURE__*/function () {
 
       var varCodes = this.__declare_vars();
 
-      return "\n`timescale 1ns / 1ps\n\n".concat(moduleCodes.module.join("\n"), "\n\nmodule ").concat(moduleName, " (\n  input CLK,\n  input [3:0] BTN,\n  input [3:0] SW,\n  output [3:0] LED\n);\n\n  ").concat(moduleCodes.var.join("\n  "), "\n\n  ").concat(varCodes.join("\n  "), "\n\n  ").concat(codes.join("\n  "), "\n\nendmodule");
+      return "\n`timescale 1ns / 1ps\n\n".concat(moduleCodes.module.join("\n"), "\n\nmodule ").concat(moduleName, " (\n  input CLK,\n  input [3:0] BTN,\n  input [3:0] SW,\n  output [3:0] LED,\n  output [6:0] LED7SEG,\n  output SEL\n);\n  wire [6:0] LED7SEG;\n  wire SEL;\n\n  ").concat(moduleCodes.var.join("\n  "), "\n\n  ").concat(varCodes.join("\n  "), "\n\n  ").concat(codes.join("\n  "), "\n\nendmodule");
     }
   }, {
     key: "_emit_obj",
@@ -1034,13 +1034,22 @@ var Emitter = /*#__PURE__*/function () {
             return "(".concat(args[0], ") ? (").concat(args[1], ") : (").concat(args[2], ")");
 
           case "blink":
-            this.modules.add("Blink");
             var clock = args[0] * 125000000 - 1;
+            this.modules.add("Blink");
             this.vars.add(JSON.stringify({
               type: "Blink",
               clock: clock
             }));
             return "blink_".concat(clock);
+
+          case "led7seg2digit":
+            var value = args[0];
+            this.modules.add("LED7Seg2Digit");
+            this.vars.add(JSON.stringify({
+              type: "LED7Seg2Digit",
+              value: value
+            }));
+            return null;
         }
       }
 
@@ -1076,8 +1085,11 @@ var Emitter = /*#__PURE__*/function () {
       this.modules.forEach(function (value) {
         switch (value) {
           case "Blink":
-            moduleCodes.push("\nmodule Blink (\n  input CLK,\n  output LED\n);\n\n  // default 1sec, max 10sec\n  parameter CNT_MAX = 31'd124999999;\n  reg [30:0] cnt = 31'd0;\n  reg led = 1'd0;\n\n  always @(posedge CLK) begin\n    if (cnt == CNT_MAX) begin\n      cnt <= 30'd0;\n      led <= ~led;\n    end\n    else begin\n      cnt <= cnt + 30'd1;\n    end\n  end\n\n  assign LED = led;\n\nendmodule".split("\n")); // varCodes.push(["wire blink1s;", "Blink1s Blink(CLK, blink1s);"]);
+            moduleCodes.push("\nmodule Blink (\n  input CLK,\n  output LED\n);\n  // default 1sec, max 10sec\n  parameter CNT_MAX = 31'd124999999;\n  reg [30:0] cnt = 31'd0;\n  reg led = 1'd0;\n\n  always @(posedge CLK) begin\n    if (cnt == CNT_MAX) begin\n      cnt <= 30'd0;\n      led <= ~led;\n    end\n    else begin\n      cnt <= cnt + 30'd1;\n    end\n  end\n\n  assign LED = led;\nendmodule".split("\n"));
+            break;
 
+          case "LED7Seg2Digit":
+            moduleCodes.push("\nmodule LED7Seg2Digit (\n  input CLK,\n  input [6:0] VALUE, \n  output [6:0] LED7SEG,\n  output SEL\n);\n  reg [6:0] LED7SEG;\n  reg digit = 0;\n  reg [9:0] counter;\n\n  assign SEL = digit;\n\n  always @(posedge CLK) begin\n    counter <= counter + 10'b1;\n    if (counter == 10'b0) begin\n      digit <= ~digit;\n    end\n    case (digit ? (VALUE / 10) % 10 : VALUE % 10)\n      4'd0:  LED7SEG = digit ? 8'b0000000 : 8'b1111110;\n      4'd1:  LED7SEG = 8'b0110000;\n      4'd2:  LED7SEG = 8'b1101101;\n      4'd3:  LED7SEG = 8'b1111001;\n      4'd4:  LED7SEG = 8'b0110011;\n      4'd5:  LED7SEG = 8'b1011011;\n      4'd6:  LED7SEG = 8'b1011111;\n      4'd7:  LED7SEG = 8'b1110000;\n      4'd8:  LED7SEG = 8'b1111111;\n      4'd9:  LED7SEG = 8'b1110011;\n    endcase\n  end\nendmodule".split("\n"));
             break;
         }
       });
@@ -1100,6 +1112,10 @@ var Emitter = /*#__PURE__*/function () {
         switch (value.type) {
           case "Blink":
             varCodes.push(["wire blink_".concat(value.clock, ";"), "Blink Blink_".concat(value.clock, "(CLK,blink_").concat(value.clock, ");"), "defparam Blink_".concat(value.clock, ".CNT_MAX = 31'd").concat(value.clock, ";")]);
+            break;
+
+          case "LED7Seg2Digit":
+            varCodes.push(["LED7Seg2Digit led7seg2digit(CLK,cnt,".concat(value.value, ",SEL); ")]);
             break;
         }
       });
@@ -1264,6 +1280,11 @@ var ExtensionBlocks = /*#__PURE__*/function () {
     value: function ifelse(args) {
       return "ifelse(".concat(args.cond, ", ").concat(args.x, ", ").concat(args.y, ")");
     }
+  }, {
+    key: "led7seg2digit",
+    value: function led7seg2digit(args) {
+      return "led7seg2digit(".concat(args.value, ")");
+    }
     /**
      * @returns {object} metadata for this extension and its blocks.
      */
@@ -1326,6 +1347,22 @@ var ExtensionBlocks = /*#__PURE__*/function () {
               defaultValue: "LED0"
             },
             expression: {
+              type: argumentType.STRING,
+              defaultValue: "0"
+            }
+          }
+        }, {
+          opcode: "LED7Seg2Digit",
+          blockType: blockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.LED7Seg2Digit",
+            default: "[value]を7セグメントLEDに繋げる",
+            description: "Connect to 7-segment led"
+          }),
+          func: "led7seg2digit",
+          arguments: {
+            value: {
               type: argumentType.STRING,
               defaultValue: "0"
             }

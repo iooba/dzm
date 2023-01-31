@@ -20,7 +20,7 @@ Number "number"
   { return { type: "number", number } }
 
 String
-  = _ text:[a-zA-Z]+ { return text.join("") }
+  = _ text:[a-zA-Z0-9]+ { return text.join("") }
 
 Integer
   = _ [0-9]+ { return parseInt(text(), 10); }

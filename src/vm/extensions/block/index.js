@@ -179,6 +179,10 @@ class ExtensionBlocks {
     return `ifelse(${args.cond}, ${args.x}, ${args.y})`;
   }
 
+  led7seg2digit(args) {
+    return `led7seg2digit(${args.value})`;
+  }
+
   /**
    * @returns {object} metadata for this extension and its blocks.
    */
@@ -241,6 +245,23 @@ class ExtensionBlocks {
               defaultValue: "LED0",
             },
             expression: {
+              type: ArgumentType.STRING,
+              defaultValue: "0",
+            },
+          },
+        },
+        {
+          opcode: "LED7Seg2Digit",
+          blockType: BlockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.LED7Seg2Digit",
+            default: "[value]を7セグメントLEDに繋げる",
+            description: "Connect to 7-segment led",
+          }),
+          func: "led7seg2digit",
+          arguments: {
+            value: {
               type: ArgumentType.STRING,
               defaultValue: "0",
             },

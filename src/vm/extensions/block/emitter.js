@@ -24,8 +24,12 @@ module ${moduleName} (
   input CLK,
   input [3:0] BTN,
   input [3:0] SW,
-  output [3:0] LED
+  output [3:0] LED,
+  output [6:0] LED7SEG,
+  output SEL
 );
+  wire [6:0] LED7SEG;
+  wire SEL;
 
   ${moduleCodes.var.join("\n  ")}
 
@@ -68,10 +72,16 @@ endmodule`;
           return `(${args[0]}) ? (${args[1]}) : (${args[2]})`;
 
         case "blink":
-          this.modules.add("Blink");
           const clock = args[0] * 125000000 - 1;
+          this.modules.add("Blink");
           this.vars.add(JSON.stringify({ type: "Blink", clock }));
           return `blink_${clock}`;
+
+        case "led7seg2digit":
+          const value = args[0];
+          this.modules.add("LED7Seg2Digit");
+          this.vars.add(JSON.stringify({ type: "LED7Seg2Digit", value }));
+          return null;
       }
     }
 
@@ -113,7 +123,6 @@ module Blink (
   input CLK,
   output LED
 );
-
   // default 1sec, max 10sec
   parameter CNT_MAX = 31'd124999999;
   reg [30:0] cnt = 31'd0;
@@ -130,10 +139,45 @@ module Blink (
   end
 
   assign LED = led;
-
 endmodule`.split("\n")
           );
-          // varCodes.push(["wire blink1s;", "Blink1s Blink(CLK, blink1s);"]);
+          break;
+
+        case "LED7Seg2Digit":
+          moduleCodes.push(
+            `
+module LED7Seg2Digit (
+  input CLK,
+  input [6:0] VALUE, 
+  output [6:0] LED7SEG,
+  output SEL
+);
+  reg [6:0] LED7SEG;
+  reg digit = 0;
+  reg [9:0] counter;
+
+  assign SEL = digit;
+
+  always @(posedge CLK) begin
+    counter <= counter + 10'b1;
+    if (counter == 10'b0) begin
+      digit <= ~digit;
+    end
+    case (digit ? (VALUE / 10) % 10 : VALUE % 10)
+      4'd0:  LED7SEG = digit ? 8'b0000000 : 8'b1111110;
+      4'd1:  LED7SEG = 8'b0110000;
+      4'd2:  LED7SEG = 8'b1101101;
+      4'd3:  LED7SEG = 8'b1111001;
+      4'd4:  LED7SEG = 8'b0110011;
+      4'd5:  LED7SEG = 8'b1011011;
+      4'd6:  LED7SEG = 8'b1011111;
+      4'd7:  LED7SEG = 8'b1110000;
+      4'd8:  LED7SEG = 8'b1111111;
+      4'd9:  LED7SEG = 8'b1110011;
+    endcase
+  end
+endmodule`.split("\n")
+          );
           break;
       }
     });
@@ -155,6 +199,11 @@ endmodule`.split("\n")
             `wire blink_${value.clock};`,
             `Blink Blink_${value.clock}(CLK,blink_${value.clock});`,
             `defparam Blink_${value.clock}.CNT_MAX = 31'd${value.clock};`,
+          ]);
+          break;
+        case "LED7Seg2Digit":
+          varCodes.push([
+            `LED7Seg2Digit led7seg2digit(CLK,cnt,${value.value},SEL); `,
           ]);
           break;
       }

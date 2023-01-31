@@ -177,7 +177,7 @@ function peg$parse(input, options) {
   var peg$c1 = ",";
   var peg$c2 = ")";
 
-  var peg$r0 = /^[a-zA-Z]/;
+  var peg$r0 = /^[a-zA-Z0-9]/;
   var peg$r1 = /^[0-9]/;
   var peg$r2 = /^[ \t\f\r\n\v]/;
 
@@ -187,7 +187,7 @@ function peg$parse(input, options) {
   var peg$e3 = peg$literalExpectation(")", false);
   var peg$e4 = peg$otherExpectation("ident");
   var peg$e5 = peg$otherExpectation("number");
-  var peg$e6 = peg$classExpectation([["a", "z"], ["A", "Z"]], false, false);
+  var peg$e6 = peg$classExpectation([["a", "z"], ["A", "Z"], ["0", "9"]], false, false);
   var peg$e7 = peg$classExpectation([["0", "9"]], false, false);
   var peg$e8 = peg$otherExpectation("whitespace");
   var peg$e9 = peg$classExpectation([" ", "\t", "\f", "\r", "\n", "\v"], false, false);
