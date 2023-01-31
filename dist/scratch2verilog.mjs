@@ -1249,11 +1249,13 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       });
       console.log(program);
       return navigator.clipboard.writeText(program).then(function () {
-        console.log("Copied to clipboard.");
-        return "Copied to clipboard.";
+        console.log("Copied to clipboard!");
+        window.alert("\u30AF\u30EA\u30C3\u30D7\u30DC\u30FC\u30C9\u306B\u30B3\u30D4\u30FC\u3057\u307E\u3057\u305F\uFF01\n".concat(program));
       }).catch(function () {
         console.log("Copy to clipboard failed.");
-        return "Copy to clipboard failed.";
+        window.alert("\u30AF\u30EA\u30C3\u30D7\u30DC\u30FC\u30C9\u3078\u306E\u30B3\u30D4\u30FC\u306B\u5931\u6557\u3057\u307E\u3057\u305F\n".concat(program));
+      }).finally(function () {
+        return program;
       });
     }
   }, {

@@ -114,12 +114,15 @@ class ExtensionBlocks {
     return navigator.clipboard
       .writeText(program)
       .then(() => {
-        console.log("Copied to clipboard.");
-        return "Copied to clipboard.";
+        console.log("Copied to clipboard!");
+        window.alert(`クリップボードにコピーしました！\n${program}`);
       })
       .catch(() => {
         console.log("Copy to clipboard failed.");
-        return "Copy to clipboard failed.";
+        window.alert(`クリップボードへのコピーに失敗しました\n${program}`);
+      })
+      .finally(() => {
+        return program;
       });
   }
 
