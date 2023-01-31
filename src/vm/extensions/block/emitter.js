@@ -71,17 +71,35 @@ endmodule`;
         case "ifelse":
           return `(${args[0]}) ? (${args[1]}) : (${args[2]})`;
 
-        case "blink":
+        case "blink": {
           const clock = args[0] * 125000000 - 1;
           this.modules.add("Blink");
           this.vars.add(JSON.stringify({ type: "Blink", clock }));
           return `blink_${clock}`;
+        }
 
-        case "led7seg2digit":
+        case "led7seg2digit": {
           const value = args[0];
           this.modules.add("LED7Seg2Digit");
           this.vars.add(JSON.stringify({ type: "LED7Seg2Digit", value }));
           return null;
+        }
+
+        case "counter": {
+          const clock = args[0];
+          const index = this.vars.size;
+          this.modules.add("Counter");
+          this.vars.add(JSON.stringify({ type: "Counter", clock, index }));
+          return `counter_${index}`;
+        }
+
+        case "pulsar": {
+          const value = args[0];
+          const index = this.vars.size;
+          this.modules.add("Pulsar");
+          this.vars.add(JSON.stringify({ type: "Pulsar", value, index }));
+          return `pulsar_${index}`;
+        }
       }
     }
 
@@ -127,7 +145,6 @@ module Blink (
   parameter CNT_MAX = 31'd124999999;
   reg [30:0] cnt = 31'd0;
   reg led = 1'd0;
-
   always @(posedge CLK) begin
     if (cnt == CNT_MAX) begin
       cnt <= 30'd0;
@@ -137,7 +154,6 @@ module Blink (
       cnt <= cnt + 30'd1;
     end
   end
-
   assign LED = led;
 endmodule`.split("\n")
           );
@@ -155,9 +171,7 @@ module LED7Seg2Digit (
   reg [6:0] LED7SEG;
   reg digit = 0;
   reg [9:0] counter;
-
   assign SEL = digit;
-
   always @(posedge CLK) begin
     counter <= counter + 10'b1;
     if (counter == 10'b0) begin
@@ -175,6 +189,40 @@ module LED7Seg2Digit (
       4'd8:  LED7SEG = 8'b1111111;
       4'd9:  LED7SEG = 8'b1110011;
     endcase
+  end
+endmodule`.split("\n")
+          );
+          break;
+
+        case "Counter":
+          moduleCodes.push(
+            `
+module Counter (
+  input CLK,
+  output [9:0] VALUE
+);
+  reg [9:0] VALUE;
+  parameter VALUE_MAX = 10'd99;
+  always @(posedge CLK) begin
+    VALUE <= VALUE + 10'b1;
+  end
+endmodule`.split("\n")
+          );
+          break;
+
+        case "Pulsar":
+          moduleCodes.push(
+            `
+module Pulsar (
+  input CLK,
+  input IN,
+  output OUT
+);
+  reg OUT;
+  reg pIN;
+  always @(posedge CLK) begin
+    OUT <= IN & !pIN;
+    pIN <= IN;
   end
 endmodule`.split("\n")
           );
@@ -206,6 +254,20 @@ endmodule`.split("\n")
         case "LED7Seg2Digit":
           varCodes.push([
             `LED7Seg2Digit led7seg2digit(CLK,${value.value},LED7SEG,SEL); `,
+          ]);
+          break;
+
+        case "Counter":
+          varCodes.push([
+            `wire [9:0] counter_${value.index};`,
+            `Counter Counter_${value.index}(${value.clock},counter_${value.index}); `,
+          ]);
+          break;
+
+        case "Pulsar":
+          varCodes.push([
+            `wire pulsar_${value.index};`,
+            `Pulsar Pulsar_${value.index}(CLK,${value.value},pulsar_${value.index}); `,
           ]);
           break;
       }

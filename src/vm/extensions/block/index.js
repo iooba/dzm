@@ -131,6 +131,14 @@ class ExtensionBlocks {
     return `led7seg2digit(${args.value})`;
   }
 
+  counter(args) {
+    return `counter(${args.clock})`;
+  }
+
+  pulsar(args) {
+    return `pulsar(${args.value})`;
+  }
+
   blink1s(args) {
     return `blink(${args.sec})`;
   }
@@ -281,6 +289,40 @@ class ExtensionBlocks {
             sec: {
               type: ArgumentType.NUMBER,
               defaultValue: "1",
+            },
+          },
+        },
+        {
+          opcode: "Counter",
+          blockType: BlockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.Counter",
+            default: "[clock] のカウンター",
+            description: "Counter",
+          }),
+          func: "counter",
+          arguments: {
+            clock: {
+              type: ArgumentType.STRING,
+              defaultValue: "0",
+            },
+          },
+        },
+        {
+          opcode: "Pulsar",
+          blockType: BlockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.Pulsar",
+            default: "[value] のパルス信号",
+            description: "Pulsar",
+          }),
+          func: "pulsar",
+          arguments: {
+            value: {
+              type: ArgumentType.STRING,
+              defaultValue: "0",
             },
           },
         },

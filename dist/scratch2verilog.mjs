@@ -1034,40 +1034,70 @@ var Emitter = /*#__PURE__*/function () {
             return "(".concat(args[0], ") ? (").concat(args[1], ") : (").concat(args[2], ")");
 
           case "blink":
-            var clock = args[0] * 125000000 - 1;
-            this.modules.add("Blink");
-            this.vars.add(JSON.stringify({
-              type: "Blink",
-              clock: clock
-            }));
-            return "blink_".concat(clock);
+            {
+              var clock = args[0] * 125000000 - 1;
+              this.modules.add("Blink");
+              this.vars.add(JSON.stringify({
+                type: "Blink",
+                clock: clock
+              }));
+              return "blink_".concat(clock);
+            }
 
           case "led7seg2digit":
-            var value = args[0];
-            this.modules.add("LED7Seg2Digit");
-            this.vars.add(JSON.stringify({
-              type: "LED7Seg2Digit",
-              value: value
-            }));
-            return null;
+            {
+              var value = args[0];
+              this.modules.add("LED7Seg2Digit");
+              this.vars.add(JSON.stringify({
+                type: "LED7Seg2Digit",
+                value: value
+              }));
+              return null;
+            }
+
+          case "counter":
+            {
+              var _clock = args[0];
+              var index = this.vars.size;
+              this.modules.add("Counter");
+              this.vars.add(JSON.stringify({
+                type: "Counter",
+                clock: _clock,
+                index: index
+              }));
+              return "counter_".concat(index);
+            }
+
+          case "pulsar":
+            {
+              var _value = args[0];
+              var _index = this.vars.size;
+              this.modules.add("Pulsar");
+              this.vars.add(JSON.stringify({
+                type: "Pulsar",
+                value: _value,
+                index: _index
+              }));
+              return "pulsar_".concat(_index);
+            }
         }
       }
 
       if (obj.type === "ident") {
         var name = obj.name;
-        var index = obj.index;
+        var _index2 = obj.index;
 
         if (["LED", "BTN", "SW"].includes(name)) {
-          if (index !== null) {
-            return "".concat(name, "[").concat(index, "]");
+          if (_index2 !== null) {
+            return "".concat(name, "[").concat(_index2, "]");
           } else {
             return name;
           }
         } // TODO: 自動生成
 
 
-        if (index !== null) {
-          return "".concat(name).concat(index);
+        if (_index2 !== null) {
+          return "".concat(name).concat(_index2);
         } else {
           return name;
         }
@@ -1085,11 +1115,19 @@ var Emitter = /*#__PURE__*/function () {
       this.modules.forEach(function (value) {
         switch (value) {
           case "Blink":
-            moduleCodes.push("\nmodule Blink (\n  input CLK,\n  output LED\n);\n  // default 1sec, max 10sec\n  parameter CNT_MAX = 31'd124999999;\n  reg [30:0] cnt = 31'd0;\n  reg led = 1'd0;\n\n  always @(posedge CLK) begin\n    if (cnt == CNT_MAX) begin\n      cnt <= 30'd0;\n      led <= ~led;\n    end\n    else begin\n      cnt <= cnt + 30'd1;\n    end\n  end\n\n  assign LED = led;\nendmodule".split("\n"));
+            moduleCodes.push("\nmodule Blink (\n  input CLK,\n  output LED\n);\n  // default 1sec, max 10sec\n  parameter CNT_MAX = 31'd124999999;\n  reg [30:0] cnt = 31'd0;\n  reg led = 1'd0;\n  always @(posedge CLK) begin\n    if (cnt == CNT_MAX) begin\n      cnt <= 30'd0;\n      led <= ~led;\n    end\n    else begin\n      cnt <= cnt + 30'd1;\n    end\n  end\n  assign LED = led;\nendmodule".split("\n"));
             break;
 
           case "LED7Seg2Digit":
-            moduleCodes.push("\nmodule LED7Seg2Digit (\n  input CLK,\n  input [6:0] VALUE, \n  output [6:0] LED7SEG,\n  output SEL\n);\n  reg [6:0] LED7SEG;\n  reg digit = 0;\n  reg [9:0] counter;\n\n  assign SEL = digit;\n\n  always @(posedge CLK) begin\n    counter <= counter + 10'b1;\n    if (counter == 10'b0) begin\n      digit <= ~digit;\n    end\n    case (digit ? (VALUE / 10) % 10 : VALUE % 10)\n      4'd0:  LED7SEG = digit ? 8'b0000000 : 8'b1111110;\n      4'd1:  LED7SEG = 8'b0110000;\n      4'd2:  LED7SEG = 8'b1101101;\n      4'd3:  LED7SEG = 8'b1111001;\n      4'd4:  LED7SEG = 8'b0110011;\n      4'd5:  LED7SEG = 8'b1011011;\n      4'd6:  LED7SEG = 8'b1011111;\n      4'd7:  LED7SEG = 8'b1110000;\n      4'd8:  LED7SEG = 8'b1111111;\n      4'd9:  LED7SEG = 8'b1110011;\n    endcase\n  end\nendmodule".split("\n"));
+            moduleCodes.push("\nmodule LED7Seg2Digit (\n  input CLK,\n  input [6:0] VALUE, \n  output [6:0] LED7SEG,\n  output SEL\n);\n  reg [6:0] LED7SEG;\n  reg digit = 0;\n  reg [9:0] counter;\n  assign SEL = digit;\n  always @(posedge CLK) begin\n    counter <= counter + 10'b1;\n    if (counter == 10'b0) begin\n      digit <= ~digit;\n    end\n    case (digit ? (VALUE / 10) % 10 : VALUE % 10)\n      4'd0:  LED7SEG = digit ? 8'b0000000 : 8'b1111110;\n      4'd1:  LED7SEG = 8'b0110000;\n      4'd2:  LED7SEG = 8'b1101101;\n      4'd3:  LED7SEG = 8'b1111001;\n      4'd4:  LED7SEG = 8'b0110011;\n      4'd5:  LED7SEG = 8'b1011011;\n      4'd6:  LED7SEG = 8'b1011111;\n      4'd7:  LED7SEG = 8'b1110000;\n      4'd8:  LED7SEG = 8'b1111111;\n      4'd9:  LED7SEG = 8'b1110011;\n    endcase\n  end\nendmodule".split("\n"));
+            break;
+
+          case "Counter":
+            moduleCodes.push("\nmodule Counter (\n  input CLK,\n  output [9:0] VALUE\n);\n  reg [9:0] VALUE;\n  parameter VALUE_MAX = 10'd99;\n  always @(posedge CLK) begin\n    VALUE <= VALUE + 10'b1;\n  end\nendmodule".split("\n"));
+            break;
+
+          case "Pulsar":
+            moduleCodes.push("\nmodule Pulsar (\n  input CLK,\n  input IN,\n  output OUT\n);\n  reg OUT;\n  reg pIN;\n  always @(posedge CLK) begin\n    OUT <= IN & !pIN;\n    pIN <= IN;\n  end\nendmodule".split("\n"));
             break;
         }
       });
@@ -1116,6 +1154,14 @@ var Emitter = /*#__PURE__*/function () {
 
           case "LED7Seg2Digit":
             varCodes.push(["LED7Seg2Digit led7seg2digit(CLK,".concat(value.value, ",LED7SEG,SEL); ")]);
+            break;
+
+          case "Counter":
+            varCodes.push(["wire [9:0] counter_".concat(value.index, ";"), "Counter Counter_".concat(value.index, "(").concat(value.clock, ",counter_").concat(value.index, "); ")]);
+            break;
+
+          case "Pulsar":
+            varCodes.push(["wire pulsar_".concat(value.index, ";"), "Pulsar Pulsar_".concat(value.index, "(CLK,").concat(value.value, ",pulsar_").concat(value.index, "); ")]);
             break;
         }
       });
@@ -1216,6 +1262,21 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       return "assign(".concat(args.var, ", ").concat(args.expression, ")");
     }
   }, {
+    key: "led7seg2digit",
+    value: function led7seg2digit(args) {
+      return "led7seg2digit(".concat(args.value, ")");
+    }
+  }, {
+    key: "counter",
+    value: function counter(args) {
+      return "counter(".concat(args.clock, ")");
+    }
+  }, {
+    key: "pulsar",
+    value: function pulsar(args) {
+      return "pulsar(".concat(args.value, ")");
+    }
+  }, {
     key: "blink1s",
     value: function blink1s(args) {
       return "blink(".concat(args.sec, ")");
@@ -1279,11 +1340,6 @@ var ExtensionBlocks = /*#__PURE__*/function () {
     key: "ifelse",
     value: function ifelse(args) {
       return "ifelse(".concat(args.cond, ", ").concat(args.x, ", ").concat(args.y, ")");
-    }
-  }, {
-    key: "led7seg2digit",
-    value: function led7seg2digit(args) {
-      return "led7seg2digit(".concat(args.value, ")");
     }
     /**
      * @returns {object} metadata for this extension and its blocks.
@@ -1381,6 +1437,38 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             sec: {
               type: argumentType.NUMBER,
               defaultValue: "1"
+            }
+          }
+        }, {
+          opcode: "Counter",
+          blockType: blockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.Counter",
+            default: "[clock] のカウンター",
+            description: "Counter"
+          }),
+          func: "counter",
+          arguments: {
+            clock: {
+              type: argumentType.STRING,
+              defaultValue: "0"
+            }
+          }
+        }, {
+          opcode: "Pulsar",
+          blockType: blockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.Pulsar",
+            default: "[value] のパルス信号",
+            description: "Pulsar"
+          }),
+          func: "pulsar",
+          arguments: {
+            value: {
+              type: argumentType.STRING,
+              defaultValue: "0"
             }
           }
         }, {
