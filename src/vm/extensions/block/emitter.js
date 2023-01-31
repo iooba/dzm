@@ -193,6 +193,7 @@ endmodule`.split("\n")
 
     this.vars.forEach((v) => {
       const value = JSON.parse(v);
+
       switch (value.type) {
         case "Blink":
           varCodes.push([
@@ -201,9 +202,10 @@ endmodule`.split("\n")
             `defparam Blink_${value.clock}.CNT_MAX = 31'd${value.clock};`,
           ]);
           break;
+
         case "LED7Seg2Digit":
           varCodes.push([
-            `LED7Seg2Digit led7seg2digit(CLK,cnt,${value.value},SEL); `,
+            `LED7Seg2Digit led7seg2digit(CLK,${value.value},LED7SEG,SEL); `,
           ]);
           break;
       }

@@ -127,6 +127,10 @@ class ExtensionBlocks {
     return `assign(${args.var}, ${args.expression})`;
   }
 
+  led7seg2digit(args) {
+    return `led7seg2digit(${args.value})`;
+  }
+
   blink1s(args) {
     return `blink(${args.sec})`;
   }
@@ -177,10 +181,6 @@ class ExtensionBlocks {
 
   ifelse(args) {
     return `ifelse(${args.cond}, ${args.x}, ${args.y})`;
-  }
-
-  led7seg2digit(args) {
-    return `led7seg2digit(${args.value})`;
   }
 
   /**

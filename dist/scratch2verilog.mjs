@@ -1115,7 +1115,7 @@ var Emitter = /*#__PURE__*/function () {
             break;
 
           case "LED7Seg2Digit":
-            varCodes.push(["LED7Seg2Digit led7seg2digit(CLK,cnt,".concat(value.value, ",SEL); ")]);
+            varCodes.push(["LED7Seg2Digit led7seg2digit(CLK,".concat(value.value, ",LED7SEG,SEL); ")]);
             break;
         }
       });
