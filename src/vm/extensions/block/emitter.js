@@ -78,7 +78,7 @@ endmodule`;
           return `blink_${clock}`;
         }
 
-        case "led7seg2digit": {
+        case "segment": {
           const value = args[0];
           this.modules.add("LED7Seg2Digit");
           this.vars.add(JSON.stringify({ type: "LED7Seg2Digit", value }));

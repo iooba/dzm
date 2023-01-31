@@ -397,7 +397,7 @@ function peg$parse(input, options) {
   var peg$c0 = "(";
   var peg$c1 = ",";
   var peg$c2 = ")";
-  var peg$r0 = /^[a-zA-Z0-9]/;
+  var peg$r0 = /^[a-zA-Z]/;
   var peg$r1 = /^[0-9]/;
   var peg$r2 = /^[ \t\f\r\n\v]/;
   var peg$e0 = peg$otherExpectation("function");
@@ -406,7 +406,7 @@ function peg$parse(input, options) {
   var peg$e3 = peg$literalExpectation(")", false);
   var peg$e4 = peg$otherExpectation("ident");
   var peg$e5 = peg$otherExpectation("number");
-  var peg$e6 = peg$classExpectation([["a", "z"], ["A", "Z"], ["0", "9"]], false, false);
+  var peg$e6 = peg$classExpectation([["a", "z"], ["A", "Z"]], false, false);
   var peg$e7 = peg$classExpectation([["0", "9"]], false, false);
   var peg$e8 = peg$otherExpectation("whitespace");
   var peg$e9 = peg$classExpectation([" ", "\t", "\f", "\r", "\n", "\v"], false, false);
@@ -1044,7 +1044,7 @@ var Emitter = /*#__PURE__*/function () {
               return "blink_".concat(clock);
             }
 
-          case "led7seg2digit":
+          case "segment":
             {
               var value = args[0];
               this.modules.add("LED7Seg2Digit");
@@ -1264,7 +1264,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
   }, {
     key: "led7seg2digit",
     value: function led7seg2digit(args) {
-      return "led7seg2digit(".concat(args.value, ")");
+      return "segment(".concat(args.value, ")");
     }
   }, {
     key: "counter",

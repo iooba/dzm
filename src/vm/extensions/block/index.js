@@ -128,7 +128,7 @@ class ExtensionBlocks {
   }
 
   led7seg2digit(args) {
-    return `led7seg2digit(${args.value})`;
+    return `segment(${args.value})`;
   }
 
   counter(args) {
