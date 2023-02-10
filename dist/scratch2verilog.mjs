@@ -981,7 +981,7 @@ var Emitter = /*#__PURE__*/function () {
 
       var varCodes = this.__declare_vars();
 
-      return "\n`timescale 1ns / 1ps\n\n".concat(moduleCodes.module.join("\n"), "\n\nmodule ").concat(moduleName, " (\n  input CLK,\n  input [3:0] BTN,\n  input [3:0] SW,\n  output [3:0] LED,\n  output [6:0] LED7SEG,\n  output SEL\n);\n  wire [6:0] LED7SEG;\n  wire SEL;\n\n  ").concat(moduleCodes.var.join("\n  "), "\n\n  ").concat(varCodes.join("\n  "), "\n\n  ").concat(codes.join("\n  "), "\n\nendmodule");
+      return "\n`timescale 1ns / 1ps\n\n".concat(moduleCodes.module.join("\n"), "\n\nmodule ").concat(moduleName, " (\n  input CLK,\n  input [3:0] BTN,\n  input [3:0] SW,\n  output [3:0] LED,\n  output [6:0] LED7SEG,\n  output SEL\n);\n  ").concat(moduleCodes.var.join("\n  "), "\n\n  ").concat(varCodes.join("\n  "), "\n\n  ").concat(codes.join("\n  "), "\n\nendmodule");
     }
   }, {
     key: "_emit_obj",
@@ -1155,7 +1155,7 @@ var Emitter = /*#__PURE__*/function () {
             break;
 
           case "LED7Seg2Digit":
-            varCodes.push(["LED7Seg2Digit led7seg2digit(CLK,".concat(value.value, ",LED7SEG,SEL); ")]);
+            varCodes.push(["wire [6:0] LED7SEG;", "wire SEL;", "LED7Seg2Digit led7seg2digit(CLK,".concat(value.value, ",LED7SEG,SEL); ")]);
             break;
 
           case "Counter":
@@ -1684,11 +1684,11 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           arguments: {
             clock: {
               type: argumentType.STRING,
-              defaultValue: "0"
+              defaultValue: "1"
             },
             max: {
               type: argumentType.STRING,
-              defaultValue: ""
+              defaultValue: "99"
             }
           }
         }, {

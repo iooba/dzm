@@ -547,11 +547,11 @@ class ExtensionBlocks {
           arguments: {
             clock: {
               type: ArgumentType.STRING,
-              defaultValue: "0",
+              defaultValue: "1",
             },
             max: {
               type: ArgumentType.STRING,
-              defaultValue: "",
+              defaultValue: "99",
             },
           },
         },
