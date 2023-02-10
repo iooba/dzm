@@ -87,18 +87,19 @@ endmodule`;
 
         case "counter": {
           const clock = args[0];
-          const index = this.vars.size;
+          const max = args[1];
+          const id = this.vars.size;
           this.modules.add("Counter");
-          this.vars.add(JSON.stringify({ type: "Counter", clock, index }));
-          return `counter_${index}`;
+          this.vars.add(JSON.stringify({ type: "Counter", clock, max, id }));
+          return `counter_${id}`;
         }
 
         case "pulsar": {
           const value = args[0];
-          const index = this.vars.size;
+          const id = this.vars.size;
           this.modules.add("Pulsar");
-          this.vars.add(JSON.stringify({ type: "Pulsar", value, index }));
-          return `pulsar_${index}`;
+          this.vars.add(JSON.stringify({ type: "Pulsar", value, id }));
+          return `pulsar_${id}`;
         }
       }
     }
@@ -259,15 +260,16 @@ endmodule`.split("\n")
 
         case "Counter":
           varCodes.push([
-            `wire [9:0] counter_${value.index};`,
-            `Counter Counter_${value.index}(${value.clock},counter_${value.index}); `,
+            `wire [9:0] counter_${value.id};`,
+            `Counter Counter_${value.id}(${value.clock},counter_${value.id}); `,
+            `defparam Counter_${value.id}.VALUE_MAX = 10'd${value.max};`,
           ]);
           break;
 
         case "Pulsar":
           varCodes.push([
-            `wire pulsar_${value.index};`,
-            `Pulsar Pulsar_${value.index}(CLK,${value.value},pulsar_${value.index}); `,
+            `wire pulsar_${value.id};`,
+            `Pulsar Pulsar_${value.id}(CLK,${value.value},pulsar_${value.id}); `,
           ]);
           break;
       }

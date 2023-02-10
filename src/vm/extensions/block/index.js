@@ -183,7 +183,7 @@ class ExtensionBlocks {
   }
 
   counter(args) {
-    return `counter(${args.clock})`;
+    return `counter(${args.clock}, ${args.max})`;
   }
 
   pulsar(args) {
@@ -540,7 +540,7 @@ class ExtensionBlocks {
           blockAllThreads: false,
           text: formatMessage({
             id: "scratch2verilog.Counter",
-            default: "[clock] のカウンター",
+            default: "最大 [max] の [clock] のカウンター",
             description: "Counter",
           }),
           func: "counter",
@@ -548,6 +548,10 @@ class ExtensionBlocks {
             clock: {
               type: ArgumentType.STRING,
               defaultValue: "0",
+            },
+            max: {
+              type: ArgumentType.STRING,
+              defaultValue: "",
             },
           },
         },

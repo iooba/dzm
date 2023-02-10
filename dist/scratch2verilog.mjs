@@ -1058,46 +1058,48 @@ var Emitter = /*#__PURE__*/function () {
           case "counter":
             {
               var _clock = args[0];
-              var index = this.vars.size;
+              var max = args[1];
+              var id = this.vars.size;
               this.modules.add("Counter");
               this.vars.add(JSON.stringify({
                 type: "Counter",
                 clock: _clock,
-                index: index
+                max: max,
+                id: id
               }));
-              return "counter_".concat(index);
+              return "counter_".concat(id);
             }
 
           case "pulsar":
             {
               var _value = args[0];
-              var _index = this.vars.size;
+              var _id = this.vars.size;
               this.modules.add("Pulsar");
               this.vars.add(JSON.stringify({
                 type: "Pulsar",
                 value: _value,
-                index: _index
+                id: _id
               }));
-              return "pulsar_".concat(_index);
+              return "pulsar_".concat(_id);
             }
         }
       }
 
       if (obj.type === "ident") {
         var name = obj.name;
-        var _index2 = obj.index;
+        var index = obj.index;
 
         if (["LED", "BTN", "SW"].includes(name)) {
-          if (_index2 !== null) {
-            return "".concat(name, "[").concat(_index2, "]");
+          if (index !== null) {
+            return "".concat(name, "[").concat(index, "]");
           } else {
             return name;
           }
         } // TODO: 自動生成
 
 
-        if (_index2 !== null) {
-          return "".concat(name).concat(_index2);
+        if (index !== null) {
+          return "".concat(name).concat(index);
         } else {
           return name;
         }
@@ -1157,11 +1159,11 @@ var Emitter = /*#__PURE__*/function () {
             break;
 
           case "Counter":
-            varCodes.push(["wire [9:0] counter_".concat(value.index, ";"), "Counter Counter_".concat(value.index, "(").concat(value.clock, ",counter_").concat(value.index, "); ")]);
+            varCodes.push(["wire [9:0] counter_".concat(value.id, ";"), "Counter Counter_".concat(value.id, "(").concat(value.clock, ",counter_").concat(value.id, "); "), "defparam Counter_".concat(value.id, ".VALUE_MAX = 10'd").concat(value.max, ";")]);
             break;
 
           case "Pulsar":
-            varCodes.push(["wire pulsar_".concat(value.index, ";"), "Pulsar Pulsar_".concat(value.index, "(CLK,").concat(value.value, ",pulsar_").concat(value.index, "); ")]);
+            varCodes.push(["wire pulsar_".concat(value.id, ";"), "Pulsar Pulsar_".concat(value.id, "(CLK,").concat(value.value, ",pulsar_").concat(value.id, "); ")]);
             break;
         }
       });
@@ -1331,7 +1333,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
   }, {
     key: "counter",
     value: function counter(args) {
-      return "counter(".concat(args.clock, ")");
+      return "counter(".concat(args.clock, ", ").concat(args.max, ")");
     }
   }, {
     key: "pulsar",
@@ -1675,7 +1677,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           blockAllThreads: false,
           text: formatMessage({
             id: "scratch2verilog.Counter",
-            default: "[clock] のカウンター",
+            default: "最大 [max] の [clock] のカウンター",
             description: "Counter"
           }),
           func: "counter",
@@ -1683,6 +1685,10 @@ var ExtensionBlocks = /*#__PURE__*/function () {
             clock: {
               type: argumentType.STRING,
               defaultValue: "0"
+            },
+            max: {
+              type: argumentType.STRING,
+              defaultValue: ""
             }
           }
         }, {
