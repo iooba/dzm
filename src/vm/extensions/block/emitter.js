@@ -28,9 +28,6 @@ module ${moduleName} (
   output [6:0] LED7SEG,
   output SEL
 );
-  wire [6:0] LED7SEG;
-  wire SEL;
-
   ${moduleCodes.var.join("\n  ")}
 
   ${varCodes.join("\n  ")}
@@ -254,6 +251,8 @@ endmodule`.split("\n")
 
         case "LED7Seg2Digit":
           varCodes.push([
+            `wire [6:0] LED7SEG;`,
+            `wire SEL;`,
             `LED7Seg2Digit led7seg2digit(CLK,${value.value},LED7SEG,SEL); `,
           ]);
           break;
