@@ -130,22 +130,6 @@ class ExtensionBlocks {
     return `assign(${args.var}, ${args.expression})`;
   }
 
-  led7seg2digit(args) {
-    return `segment(${args.value})`;
-  }
-
-  counter(args) {
-    return `counter(${args.clock})`;
-  }
-
-  pulsar(args) {
-    return `pulsar(${args.value})`;
-  }
-
-  blink1s(args) {
-    return `blink(${args.sec})`;
-  }
-
   add(args) {
     return `add(${args.x}, ${args.y})`;
   }
@@ -192,6 +176,22 @@ class ExtensionBlocks {
 
   ifelse(args) {
     return `ifelse(${args.cond}, ${args.x}, ${args.y})`;
+  }
+
+  blink1s(args) {
+    return `blink(${args.sec})`;
+  }
+
+  counter(args) {
+    return `counter(${args.clock})`;
+  }
+
+  pulsar(args) {
+    return `pulsar(${args.value})`;
+  }
+
+  led7seg2digit(args) {
+    return `segment(${args.value})`;
   }
 
   /**
@@ -256,74 +256,6 @@ class ExtensionBlocks {
               defaultValue: "LED0",
             },
             expression: {
-              type: ArgumentType.STRING,
-              defaultValue: "0",
-            },
-          },
-        },
-        {
-          opcode: "LED7Seg2Digit",
-          blockType: BlockType.REPORTER,
-          blockAllThreads: false,
-          text: formatMessage({
-            id: "scratch2verilog.LED7Seg2Digit",
-            default: "[value]を7セグメントLEDに繋げる",
-            description: "Connect to 7-segment led",
-          }),
-          func: "led7seg2digit",
-          arguments: {
-            value: {
-              type: ArgumentType.STRING,
-              defaultValue: "0",
-            },
-          },
-        },
-        {
-          opcode: "Blink1s",
-          blockType: BlockType.REPORTER,
-          blockAllThreads: false,
-          text: formatMessage({
-            id: "scratch2verilog.Blink1s",
-            default: "[sec] 秒ごとにON/OFF",
-            description: "Blink",
-          }),
-          func: "blink1s",
-          arguments: {
-            sec: {
-              type: ArgumentType.NUMBER,
-              defaultValue: "1",
-            },
-          },
-        },
-        {
-          opcode: "Counter",
-          blockType: BlockType.REPORTER,
-          blockAllThreads: false,
-          text: formatMessage({
-            id: "scratch2verilog.Counter",
-            default: "[clock] のカウンター",
-            description: "Counter",
-          }),
-          func: "counter",
-          arguments: {
-            clock: {
-              type: ArgumentType.STRING,
-              defaultValue: "0",
-            },
-          },
-        },
-        {
-          opcode: "Pulsar",
-          blockType: BlockType.REPORTER,
-          blockAllThreads: false,
-          text: formatMessage({
-            id: "scratch2verilog.Pulsar",
-            default: "[value] のパルス信号",
-            description: "Pulsar",
-          }),
-          func: "pulsar",
-          arguments: {
-            value: {
               type: ArgumentType.STRING,
               defaultValue: "0",
             },
@@ -580,6 +512,74 @@ class ExtensionBlocks {
               defaultValue: "0",
             },
             y: {
+              type: ArgumentType.STRING,
+              defaultValue: "0",
+            },
+          },
+        },
+        {
+          opcode: "Blink1s",
+          blockType: BlockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.Blink1s",
+            default: "[sec] 秒ごとにON/OFF",
+            description: "Blink",
+          }),
+          func: "blink1s",
+          arguments: {
+            sec: {
+              type: ArgumentType.NUMBER,
+              defaultValue: "1",
+            },
+          },
+        },
+        {
+          opcode: "Counter",
+          blockType: BlockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.Counter",
+            default: "[clock] のカウンター",
+            description: "Counter",
+          }),
+          func: "counter",
+          arguments: {
+            clock: {
+              type: ArgumentType.STRING,
+              defaultValue: "0",
+            },
+          },
+        },
+        {
+          opcode: "Pulsar",
+          blockType: BlockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.Pulsar",
+            default: "[value] のパルス信号",
+            description: "Pulsar",
+          }),
+          func: "pulsar",
+          arguments: {
+            value: {
+              type: ArgumentType.STRING,
+              defaultValue: "0",
+            },
+          },
+        },
+        {
+          opcode: "LED7Seg2Digit",
+          blockType: BlockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.LED7Seg2Digit",
+            default: "[value]を7セグメントLEDに繋げる",
+            description: "Connect to 7-segment led",
+          }),
+          func: "led7seg2digit",
+          arguments: {
+            value: {
               type: ArgumentType.STRING,
               defaultValue: "0",
             },
