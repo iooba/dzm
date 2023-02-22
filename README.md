@@ -27,7 +27,7 @@
 https://HitsujiRere.github.io/scratch2verilog/dist/scratch2verilog.mjs
 ```
 
-## ローカル環境での実行方法
+## 🏠 ローカル環境での実行方法
 
 参考: https://xcratch.github.io/docs/ja/#/how-to-make-extension
 
@@ -63,7 +63,7 @@ npm install
 ```
 
 ```
-git clone -b xcratch https://github.com/xcratch/scratch-gui.git
+git clone -b xcratch --single-branch --depth 1 https://github.com/xcratch/scratch-gui.git
 cd scratch-gui
 npm install
 ```
