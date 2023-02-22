@@ -14,7 +14,7 @@
 
 ![ブロックの変換](README/images/conversion.png)
 
-## 🛠️ How to Use in Xcratch
+## 🛠️ Xcratch で使う方法
 
 [Xcratch](https://xcratch.github.io/) 上で他の拡張機能と共に用いることができます．
 
@@ -26,3 +26,73 @@
 ```
 https://HitsujiRere.github.io/scratch2verilog/dist/scratch2verilog.mjs
 ```
+
+## ローカル環境での実行方法
+
+参考: https://xcratch.github.io/docs/ja/#/how-to-make-extension
+
+### 環境設定
+
+1. この README.md が置いてあるフォルダをローカルに置く（もしくは https://github.com/HitsujiRere/scratch2verilog から clone してくる）
+
+```
+scratch2verilog
+├─ dist
+├─ projects
+├─ src
+└─ README.md
+```
+
+2. `npm install` を行う
+
+```
+cd scratch2verilog
+npm install
+```
+
+3. scratch2verilog が置いてあるディレクトリに xcratch/scratch-gui を clone する
+
+```
+.
+├─ scratch2verilog
+│   ├─ dist
+│   ├─ projects
+│   ├─ src
+│   └─ README.md
+└─ scratch-gui
+```
+
+```
+git clone -b xcratch https://github.com/xcratch/scratch-gui.git
+cd scratch-gui
+npm install
+```
+
+### ローカルの Xcratch への登録
+
+1. scratch2verilog 上で、Xcratch エディタに登録する
+
+```
+cd scratch2verilog
+npm run register
+```
+
+2. scratch-gui の dev-server を起動する
+
+```
+cd scratch-gui
+npm run start -- --https
+```
+
+### モジュールの構築
+
+1. モジュールファイルをビルドする
+
+```
+cd scratch2verilog
+npm run build
+```
+
+2. Xcratch 上で用いるためにサーバを建てる（ VSCode の Extension である Live Server など）
+
+3. Xcratch へ拡張機能を読み込む（ VSCode の Live Server の場合、 https://localhost:5500/dist/scratch2verilog.mjs ）
