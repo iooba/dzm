@@ -202,7 +202,12 @@ module Counter (
   reg [9:0] VALUE;
   parameter VALUE_MAX = 10'd99;
   always @(posedge CLK) begin
-    VALUE <= VALUE + 10'b1;
+    if (VALUE_MAX == VALUE) begin
+      VALUE <= 10'b0;
+    end
+    else begin
+      VALUE <= VALUE + 10'b1;
+    end
   end
 endmodule`.split("\n")
           );
