@@ -1125,7 +1125,7 @@ var Emitter = /*#__PURE__*/function () {
             break;
 
           case "Counter":
-            moduleCodes.push("\nmodule Counter (\n  input CLK,\n  output [9:0] VALUE\n);\n  reg [9:0] VALUE;\n  parameter VALUE_MAX = 10'd99;\n  always @(posedge CLK) begin\n    VALUE <= VALUE + 10'b1;\n  end\nendmodule".split("\n"));
+            moduleCodes.push("\nmodule Counter (\n  input CLK,\n  output [9:0] VALUE\n);\n  reg [9:0] VALUE;\n  parameter VALUE_MAX = 10'd99;\n  always @(posedge CLK) begin\n    if (VALUE_MAX == VALUE) begin\n      VALUE <= 10'b0;\n    end\n    else begin\n      VALUE <= VALUE + 10'b1;\n    end\n  end\nendmodule".split("\n"));
             break;
 
           case "Pulsar":
