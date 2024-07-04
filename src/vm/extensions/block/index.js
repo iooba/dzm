@@ -135,7 +135,7 @@ class ExtensionBlocks {
   }
 
   /* 　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 */
-  rem(args) {
+  remain(args) {
     return `remain(${args.x}, ${args.y})`;
   }
   /*　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 */

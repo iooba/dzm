@@ -1276,8 +1276,8 @@ var ExtensionBlocks = /*#__PURE__*/function () {
     /* 　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 */
 
   }, {
-    key: "rem",
-    value: function rem(args) {
+    key: "remain",
+    value: function remain(args) {
       return "remain(".concat(args.x, ", ").concat(args.y, ")");
     }
     /*　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 */
