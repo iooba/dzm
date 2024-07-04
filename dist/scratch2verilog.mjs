@@ -1450,7 +1450,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           blockType: blockType.REPORTER,
           blockAllThreads: false,
           text: formatMessage({
-            id: "scratch2verilog.Rem",
+            id: "scratch2verilog.rem",
             default: "[x] % [y]",
             description: "x % y"
           }),
