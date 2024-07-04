@@ -45,7 +45,7 @@ endmodule`;
           return `assign ${args[0]} = ${args[1]};`;
         case "add":
           return `(${args[0]}) + (${args[1]})`;
-        case "rem":
+        case "remain":
           return `(${args[0]}) % (${args[1]})`;
         case "sub":
           return `(${args[0]}) - (${args[1]})`;

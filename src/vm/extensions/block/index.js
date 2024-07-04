@@ -136,7 +136,7 @@ class ExtensionBlocks {
 
   /* 　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 */
   rem(args) {
-    return `rem(${args.x}, ${args.y})`;
+    return `remain(${args.x}, ${args.y})`;
   }
   /*　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 */
 
@@ -290,15 +290,15 @@ class ExtensionBlocks {
         },
         /* 　　　　　　　　　　　　書き込み 　　　　　　　　　　　　　　*/
         {
-          opcode: "Rem",
+          opcode: "Remain",
           blockType: BlockType.REPORTER,
           blockAllThreads: false,
           text: formatMessage({
-            id: "scratch2verilog.rem",
+            id: "scratch2verilog.Remain",
             default:"[x] % [y]",
             description: "x % y",
           }),
-          fanc: "rem",
+          fanc: "remain",
           arguments: {
             x: {
               type: ArgumentType.STRING,

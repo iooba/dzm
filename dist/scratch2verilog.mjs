@@ -1000,7 +1000,7 @@ var Emitter = /*#__PURE__*/function () {
           case "add":
             return "(".concat(args[0], ") + (").concat(args[1], ")");
 
-          case "rem":
+          case "remain":
             return "(".concat(args[0], ") % (").concat(args[1], ")");
 
           case "sub":
@@ -1278,7 +1278,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
   }, {
     key: "rem",
     value: function rem(args) {
-      return "rem(".concat(args.x, ", ").concat(args.y, ")");
+      return "remain(".concat(args.x, ", ").concat(args.y, ")");
     }
     /*　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 */
 
@@ -1446,15 +1446,15 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         },
         /* 　　　　　　　　　　　　書き込み 　　　　　　　　　　　　　　*/
         {
-          opcode: "Rem",
+          opcode: "Remain",
           blockType: blockType.REPORTER,
           blockAllThreads: false,
           text: formatMessage({
-            id: "scratch2verilog.rem",
+            id: "scratch2verilog.Remain",
             default: "[x] % [y]",
             description: "x % y"
           }),
-          fanc: "rem",
+          fanc: "remain",
           arguments: {
             x: {
               type: argumentType.STRING,
