@@ -134,9 +134,11 @@ class ExtensionBlocks {
     return `add(${args.x}, ${args.y})`;
   }
 
+  /* 　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 */
   rem(args) {
     return `rem(${args.x}, ${args.y})`;
   }
+  /*　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 */
 
   sub(args) {
     return `sub(${args.x}, ${args.y})`;
@@ -288,7 +290,7 @@ class ExtensionBlocks {
         },
         /* 　　　　　　　　　　　　書き込み 　　　　　　　　　　　　　　*/
         {
-          opcode: "rem",
+          opcode: "Rem",
           blockType: BlockType.REPORTER,
           blockAllThreads: false,
           text: formatMessage({

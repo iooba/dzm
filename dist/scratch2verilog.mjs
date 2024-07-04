@@ -1000,6 +1000,9 @@ var Emitter = /*#__PURE__*/function () {
           case "add":
             return "(".concat(args[0], ") + (").concat(args[1], ")");
 
+          case "rem":
+            return "(".concat(args[0], ") % (").concat(args[1], ")");
+
           case "sub":
             return "(".concat(args[0], ") - (").concat(args[1], ")");
 
@@ -1270,11 +1273,15 @@ var ExtensionBlocks = /*#__PURE__*/function () {
     value: function add(args) {
       return "add(".concat(args.x, ", ").concat(args.y, ")");
     }
+    /* 　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 */
+
   }, {
     key: "rem",
     value: function rem(args) {
       return "rem(".concat(args.x, ", ").concat(args.y, ")");
     }
+    /*　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 */
+
   }, {
     key: "sub",
     value: function sub(args) {
@@ -1439,7 +1446,7 @@ var ExtensionBlocks = /*#__PURE__*/function () {
         },
         /* 　　　　　　　　　　　　書き込み 　　　　　　　　　　　　　　*/
         {
-          opcode: "rem",
+          opcode: "Rem",
           blockType: blockType.REPORTER,
           blockAllThreads: false,
           text: formatMessage({
