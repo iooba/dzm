@@ -1271,6 +1271,11 @@ var ExtensionBlocks = /*#__PURE__*/function () {
       return "add(".concat(args.x, ", ").concat(args.y, ")");
     }
   }, {
+    key: "rem",
+    value: function rem(args) {
+      return "rem(".concat(args.x, ", ").concat(args.y, ")");
+    }
+  }, {
     key: "sub",
     value: function sub(args) {
       return "sub(".concat(args.x, ", ").concat(args.y, ")");
@@ -1431,7 +1436,31 @@ var ExtensionBlocks = /*#__PURE__*/function () {
               defaultValue: "3"
             }
           }
-        }, {
+        },
+        /* 　　　　　　　　　　　　書き込み 　　　　　　　　　　　　　　*/
+        {
+          opcode: "rem",
+          blockType: blockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.rem",
+            default: "[x] % [y]",
+            description: "x % y"
+          }),
+          fanc: "rem",
+          arguments: {
+            x: {
+              type: argumentType.STRING,
+              defaultValue: "4"
+            },
+            y: {
+              type: argumentType.STRING,
+              defaultValue: "5"
+            }
+          }
+        },
+        /*　　　　　　　　　　　　　ここまで　　　　　　　　　　　　　　　 */
+        {
           opcode: "Sub",
           blockType: blockType.REPORTER,
           blockAllThreads: false,

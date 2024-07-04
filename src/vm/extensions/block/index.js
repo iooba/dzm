@@ -134,6 +134,10 @@ class ExtensionBlocks {
     return `add(${args.x}, ${args.y})`;
   }
 
+  rem(args) {
+    return `rem(${args.x}, ${args.y})`;
+  }
+
   sub(args) {
     return `sub(${args.x}, ${args.y})`;
   }
@@ -282,6 +286,29 @@ class ExtensionBlocks {
             },
           },
         },
+        /* 　　　　　　　　　　　　書き込み 　　　　　　　　　　　　　　*/
+        {
+          opcode: "rem",
+          blockType: BlockType.REPORTER,
+          blockAllThreads: false,
+          text: formatMessage({
+            id: "scratch2verilog.rem",
+            default:"[x] % [y]",
+            description: "x % y",
+          }),
+          fanc: "rem",
+          arguments: {
+            x: {
+              type: ArgumentType.STRING,
+              defaultValue: "4",
+            },
+            y: {
+              type: ArgumentType.STRING,
+              defaultValue: "5",
+            },
+          },
+        },
+        /*　　　　　　　　　　　　　ここまで　　　　　　　　　　　　　　　 */
         {
           opcode: "Sub",
           blockType: BlockType.REPORTER,
