@@ -294,7 +294,7 @@ class ExtensionBlocks {
           blockType: BlockType.REPORTER,
           blockAllThreads: false,
           text: formatMessage({
-            id: "scratch2verilog.rem",
+            id: "scratch2verilog.Rem",
             default:"[x] % [y]",
             description: "x % y",
           }),
