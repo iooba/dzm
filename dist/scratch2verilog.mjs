@@ -1424,11 +1424,11 @@ var ExtensionBlocks = /*#__PURE__*/function () {
           arguments: {
             x: {
               type: argumentType.STRING,
-              defaultValue: "0"
+              defaultValue: "2"
             },
             y: {
               type: argumentType.STRING,
-              defaultValue: "0"
+              defaultValue: "3"
             }
           }
         }, {

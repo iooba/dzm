@@ -274,11 +274,11 @@ class ExtensionBlocks {
           arguments: {
             x: {
               type: ArgumentType.STRING,
-              defaultValue: "0",
+              defaultValue: "2",
             },
             y: {
               type: ArgumentType.STRING,
-              defaultValue: "0",
+              defaultValue: "3",
             },
           },
         },
